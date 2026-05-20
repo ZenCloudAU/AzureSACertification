@@ -1,0 +1,3710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Certification Hub — ZenCloud</title>
+  <style>
+    /* =====================================================
+       RESET & BASE
+    ===================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:       #04070f;
+      --bg-page:       #070c1a;
+      --bg-sidebar:    #050810;
+      --bg-card:       #0c1524;
+      --bg-card-alt:   #0f1c30;
+      --bg-hover:      #142035;
+      --border-subtle: #111e35;
+      --border-default:#1a3050;
+      --border-bright: #2a5080;
+      --azure:         #0078d4;
+      --azure-hover:   #006cbf;
+      --azure-light:   #50e6ff;
+      --azure-glow:    rgba(0,120,212,0.12);
+      --azure-glow2:   rgba(0,120,212,0.06);
+      --teal:          #00b4d8;
+      --green:         #22c55e;
+      --yellow:        #f59e0b;
+      --red:           #ef4444;
+      --orange:        #fb923c;
+      --purple:        #a78bfa;
+      --text-bright:   #f0f4ff;
+      --text-primary:  #ccd8e8;
+      --text-secondary:#7a90a8;
+      --text-muted:    #3d5068;
+      --sidebar-w:     272px;
+      --radius:        8px;
+      --radius-sm:     5px;
+      --shadow-card:   0 4px 24px rgba(0,0,0,0.45);
+      --shadow-glow:   0 0 0 3px rgba(0,120,212,0.18);
+      --transition:    160ms ease;
+      --font:          -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --mono:          'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--azure); }
+
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition);
+      overscroll-behavior: contain;
+    }
+
+    /* Brand */
+    .sidebar-brand {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 6px;
+    }
+
+    .brand-icon {
+      width: 34px; height: 34px;
+      background: var(--azure);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.05em;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Nav */
+    .sidebar-nav { padding: 10px 0 20px; flex: 1; }
+
+    .nav-section { margin-top: 2px; }
+
+    .nav-section-label {
+      padding: 10px 18px 3px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 18px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 450;
+      border-left: 2px solid transparent;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--text-bright);
+      background: var(--bg-hover);
+      border-left-color: var(--border-bright);
+    }
+
+    .nav-link.active {
+      color: var(--azure-light);
+      background: var(--azure-glow2);
+      border-left-color: var(--azure);
+      font-weight: 600;
+    }
+
+    .nav-icon { font-size: 13px; width: 16px; text-align: center; flex-shrink: 0; }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--border-subtle);
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+      min-width: 0;
+    }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+    .hero {
+      padding: 60px 52px 52px;
+      background: linear-gradient(140deg, #0a1428 0%, var(--bg-page) 60%);
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,120,212,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 30%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,180,216,0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(0,180,216,0.08);
+      border: 1px solid rgba(0,180,216,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--text-bright);
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      margin-bottom: 18px;
+      max-width: 720px;
+      position: relative;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--azure-light);
+    }
+
+    .hero-lead {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 580px;
+      line-height: 1.75;
+      margin-bottom: 36px;
+      position: relative;
+    }
+
+    .hero-lead strong { color: var(--text-primary); font-weight: 600; }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .h-stat {
+      padding: 0 32px 0 0;
+      margin-right: 32px;
+      border-right: 1px solid var(--border-default);
+    }
+
+    .h-stat:last-child { border-right: none; margin-right: 0; }
+
+    .h-stat-num {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--azure-light);
+      letter-spacing: -0.04em;
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .h-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    /* Hero result badge */
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 10px 18px;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--green);
+      position: relative;
+    }
+
+    .result-badge-icon { font-size: 18px; }
+
+    .result-badge strong { font-weight: 700; }
+
+    .result-badge span { color: rgba(34,197,94,0.7); }
+
+    /* =====================================================
+       SECTION SHELL
+    ===================================================== */
+    .section {
+      padding: 52px 52px;
+      border-bottom: 1px solid var(--border-subtle);
+      max-width: 1200px;
+    }
+
+    .section:last-child { border-bottom: none; }
+
+    .s-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--azure);
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .s-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    /* =====================================================
+       CERTIFICATION PATH SECTION
+    ===================================================== */
+    .cert-path-grid {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 32px 0;
+    }
+
+    .path-arrow {
+      color: var(--border-bright);
+      font-size: 22px;
+      margin-top: 24px;
+      flex-shrink: 0;
+    }
+
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      flex: 1;
+      min-width: 160px;
+      max-width: 220px;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .cert-card.optional::before  { background: #475569; }
+    .cert-card.associate::before { background: var(--teal); }
+    .cert-card.expert::before    { background: var(--azure); }
+    .cert-card.renewal::before   { background: var(--green); }
+
+    .cert-card:hover {
+      border-color: var(--border-default);
+      background: var(--bg-hover);
+    }
+
+    .cert-card-code {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .cert-card-name {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .cert-card-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-opt     { background: rgba(71,85,105,0.25); color: #64748b; }
+    .tag-prereq  { background: rgba(0,180,216,0.12); color: var(--teal); }
+    .tag-target  { background: rgba(0,120,212,0.15); color: var(--azure-light); }
+    .tag-renewal { background: rgba(34,197,94,0.12); color: var(--green); }
+
+    /* WAF Pillars */
+    .waf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .waf-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+
+    .waf-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+
+    .waf-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 5px;
+    }
+
+    .waf-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Domain overview cards */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+
+    .domain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+
+    .domain-card:hover {
+      border-color: var(--border-bright);
+      background: var(--bg-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .domain-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .domain-card-icon { font-size: 22px; }
+
+    .domain-card-pct {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--azure-light);
+      background: var(--azure-glow);
+      border: 1px solid rgba(0,120,212,0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .domain-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 5px;
+    }
+
+    .domain-card p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Inline note */
+    .inline-note {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin: 12px 0;
+    }
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+    .site-footer {
+      padding: 28px 52px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links { display: flex; gap: 20px; }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--azure-light); }
+
+    /* =====================================================
+       MOBILE TOGGLE
+    ===================================================== */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 14px; left: 14px;
+      z-index: 200;
+      width: 38px; height: 38px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      color: var(--text-primary);
+      font-size: 17px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .mobile-toggle:hover { background: var(--bg-hover); }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+    @media (max-width: 920px) {
+      .sidebar { transform: translateX(-100%); box-shadow: none; }
+      .sidebar.open { transform: translateX(0); box-shadow: 0 0 0 100vw rgba(0,0,0,0.65); }
+      .main { margin-left: 0; }
+      .mobile-toggle { display: flex; }
+      .hero { padding: 52px 22px 40px; }
+      .hero h1 { font-size: 30px; }
+      .section { padding: 36px 22px; }
+      .h-stat { padding-right: 20px; margin-right: 20px; }
+      .h-stat-num { font-size: 22px; }
+      .cert-path-grid { flex-direction: column; }
+      .path-arrow { transform: rotate(90deg); margin: 0 auto; }
+      .site-footer { padding: 20px 22px; }
+    }
+
+    @media (max-width: 560px) {
+      .hero h1 { font-size: 24px; }
+      .cert-path-grid { gap: 8px; }
+      .cert-card { max-width: 100%; }
+    }
+
+    /* =====================================================
+       DOMAIN CONTENT STYLES
+    ===================================================== */
+
+    /* Domain header bar */
+    .domain-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 26px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 36px;
+    }
+
+    .domain-bar-left .s-eyebrow { margin-bottom: 4px; }
+    .domain-bar-left h2 { font-size: 24px; margin-bottom: 0; }
+
+    .domain-bar-weight { text-align: right; flex-shrink: 0; }
+
+    .domain-bar-weight .pct {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--azure-light);
+      letter-spacing: -0.04em;
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .domain-bar-weight .pct-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Section headings within content */
+    .s-h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.02em;
+      margin: 36px 0 14px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .s-h3:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    .s-h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 22px 0 10px;
+    }
+
+    /* Body text */
+    .body-text {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin: 0 0 12px;
+    }
+
+    .body-text strong { color: var(--text-primary); font-weight: 600; }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 12px 0 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-subtle);
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+    th {
+      background: var(--bg-card-alt);
+      color: var(--text-bright);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-default);
+      white-space: nowrap;
+      font-size: 12.5px;
+    }
+
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(20,32,53,0.7); }
+
+    /* Highlight classes */
+    .hl   { color: var(--azure-light)  !important; font-weight: 600; }
+    .hl-g { color: var(--green)        !important; font-weight: 600; }
+    .hl-y { color: var(--yellow)       !important; font-weight: 600; }
+    .hl-r { color: var(--red)          !important; font-weight: 600; }
+
+    /* Code */
+    code {
+      font-family: var(--mono);
+      background: rgba(0,120,212,0.12);
+      color: var(--azure-light);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12.5px;
+    }
+
+    pre {
+      font-family: var(--mono);
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      overflow-x: auto;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin: 12px 0 20px;
+      font-size: 13px;
+      white-space: pre;
+    }
+
+    /* Key numbers grid */
+    .kn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: 12px;
+      margin: 14px 0 28px;
+    }
+
+    .kn-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+
+    .kn-val {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--azure-light);
+      letter-spacing: -0.03em;
+      display: block;
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+
+    .kn-lbl {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* Callouts */
+    .callout {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      border-left: 3px solid;
+      margin: 14px 0 18px;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .callout-tip  { background: rgba(0,120,212,0.07);  border-color: var(--azure);  color: #93c5fd; }
+    .callout-warn { background: rgba(245,158,11,0.07); border-color: var(--yellow); color: #fcd34d; }
+    .callout-trap { background: rgba(239,68,68,0.07);  border-color: var(--red);    color: #fca5a5; }
+
+    .callout strong { font-weight: 700; }
+    .callout em { font-style: italic; }
+    .callout code { background: rgba(255,255,255,0.08); color: inherit; }
+
+    @media (max-width: 920px) {
+      .domain-bar { flex-direction: column; gap: 8px; }
+      .domain-bar-weight { text-align: left; }
+      .kn-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+
+    /* =====================================================
+       QUIZ — NATIVE DETAILS/SUMMARY (AZ-104)
+    ===================================================== */
+    .quiz-native { margin: 8px 0; }
+
+    .quiz-native details {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .quiz-native details[open] { border-color: var(--azure); }
+
+    .quiz-native summary {
+      padding: 13px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--text-primary);
+      font-size: 14.5px;
+      line-height: 1.55;
+      list-style: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .quiz-native summary::-webkit-details-marker,
+    .quiz-native summary::marker { display: none; }
+
+    .quiz-native summary:hover { background: var(--bg-hover); }
+
+    .quiz-native .q-num {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-default);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .quiz-native details[open] .q-num {
+      background: var(--azure-glow);
+      border-color: var(--azure);
+      color: var(--azure-light);
+    }
+
+    .quiz-native .q-chevron {
+      margin-left: auto;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-top: 4px;
+      font-size: 10px;
+      transition: transform var(--transition);
+    }
+
+    .quiz-native details[open] .q-chevron {
+      transform: rotate(180deg);
+      color: var(--azure);
+    }
+
+    .quiz-native .q-body {
+      padding: 0 16px 16px 54px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .a-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--azure);
+      margin: 12px 0 7px;
+    }
+
+    .a-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.72;
+    }
+
+    .a-text strong { color: var(--azure-light); font-weight: 600; }
+
+    .a-rule {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: var(--azure-glow);
+      border: 1px solid rgba(0,120,212,0.25);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--azure-light);
+      font-weight: 600;
+    }
+
+    /* Quiz progress bar */
+    .quiz-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .quiz-meta strong { color: var(--azure-light); }
+
+    /* =====================================================
+       FEATURE LIST
+    ===================================================== */
+    .feat-list {
+      list-style: none;
+      margin: 8px 0 16px;
+    }
+
+    .feat-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 5px 0 5px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .feat-list li:last-child { border-bottom: none; }
+
+    .feat-list li::before {
+      content: '›';
+      position: absolute;
+      left: 4px;
+      color: var(--azure);
+      font-weight: 700;
+    }
+
+    .feat-list li strong { color: var(--text-primary); font-weight: 600; }
+
+    /* Decision tree */
+    pre.decision-tree {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-left: 3px solid var(--azure);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0 0 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Sidebar Toggle -->
+<button class="mobile-toggle" id="mobBtn" aria-label="Toggle navigation">☰</button>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <a href="#home" class="brand-row">
+      <div class="brand-icon">ZC</div>
+      <div>
+        <div class="brand-name">ZenCloud</div>
+        <div class="brand-tag">Azure Cert Hub</div>
+      </div>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav" id="sidebarNav">
+
+    <div class="nav-section">
+      <div class="nav-section-label">Overview</div>
+      <a href="#home"       class="nav-link" data-section="home">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a href="#cert-path"  class="nav-link" data-section="cert-path">
+        <span class="nav-icon">🗺️</span> Certification Path
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">AZ-104 — Administrator</div>
+      <a href="#az104"      class="nav-link" data-section="az104">
+        <span class="nav-icon">📋</span> Overview
+      </a>
+      <a href="#az104-d1"   class="nav-link" data-section="az104-d1">
+        <span class="nav-icon">🔐</span> D1 · Identity &amp; Governance
+      </a>
+      <a href="#az104-d2"   class="nav-link" data-section="az104-d2">
+        <span class="nav-icon">💾</span> D2 · Storage
+      </a>
+      <a href="#az104-d3"   class="nav-link" data-section="az104-d3">
+        <span class="nav-icon">⚙️</span> D3 · Compute
+      </a>
+      <a href="#az104-d4"   class="nav-link" data-section="az104-d4">
+        <span class="nav-icon">🌐</span> D4 · Networking
+      </a>
+      <a href="#az104-d5"   class="nav-link" data-section="az104-d5">
+        <span class="nav-icon">📊</span> D5 · Monitor &amp; Maintain
+      </a>
+      <a href="#az104-quiz" class="nav-link" data-section="az104-quiz">
+        <span class="nav-icon">🧠</span> Practice Questions
+        <span class="nav-badge">15</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">AZ-305 — Architect Expert</div>
+      <a href="#az305"      class="nav-link" data-section="az305">
+        <span class="nav-icon">📘</span> Overview
+      </a>
+      <a href="#az305-d1"   class="nav-link" data-section="az305-d1">
+        <span class="nav-icon">🔐</span> D1 · Identity, Gov &amp; Monitor
+      </a>
+      <a href="#az305-d2"   class="nav-link" data-section="az305-d2">
+        <span class="nav-icon">🗄️</span> D2 · Data Storage
+      </a>
+      <a href="#az305-d3"   class="nav-link" data-section="az305-d3">
+        <span class="nav-icon">⚡</span> D3 · Business Continuity
+      </a>
+      <a href="#az305-d4"   class="nav-link" data-section="az305-d4">
+        <span class="nav-icon">🏗️</span> D4 · Infrastructure
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Reference &amp; Practice</div>
+      <a href="#frameworks"  class="nav-link" data-section="frameworks">
+        <span class="nav-icon">🧭</span> Decision Frameworks
+        <span class="nav-badge">10</span>
+      </a>
+      <a href="#tables"      class="nav-link" data-section="tables">
+        <span class="nav-icon">📊</span> Service Comparisons
+        <span class="nav-badge">10</span>
+      </a>
+      <a href="#quiz-d1"     class="nav-link" data-section="quiz-d1">
+        <span class="nav-icon">🧠</span> Quiz · D1 Identity
+        <span class="nav-badge">15</span>
+      </a>
+      <a href="#quiz-d2"     class="nav-link" data-section="quiz-d2">
+        <span class="nav-icon">🧠</span> Quiz · D2 Storage
+        <span class="nav-badge">15</span>
+      </a>
+      <a href="#quiz-d3"     class="nav-link" data-section="quiz-d3">
+        <span class="nav-icon">🧠</span> Quiz · D3 BCDR
+        <span class="nav-badge">15</span>
+      </a>
+      <a href="#quiz-d4"     class="nav-link" data-section="quiz-d4">
+        <span class="nav-icon">🧠</span> Quiz · D4 Infrastructure
+        <span class="nav-badge">15</span>
+      </a>
+      <a href="#traps"       class="nav-link" data-section="traps">
+        <span class="nav-icon">⚠️</span> Exam Traps
+        <span class="nav-badge">30</span>
+      </a>
+      <a href="#glossary"    class="nav-link" data-section="glossary">
+        <span class="nav-icon">📖</span> Glossary
+        <span class="nav-badge">65+</span>
+      </a>
+      <a href="#study-plan"  class="nav-link" data-section="study-plan">
+        <span class="nav-icon">📅</span> Study Plan
+      </a>
+    </div>
+
+  </nav>
+</aside>
+
+<!-- ============================================================
+     MAIN
+============================================================ -->
+<main class="main" id="mainContent">
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-eyebrow">☁️ ZenCloud Global Consultants · Brisbane, Australia</div>
+    <h1>Azure Certification<br><em>Study Hub</em></h1>
+    <p class="hero-lead">
+      Complete study guide for the <strong>AZ-104 Azure Administrator</strong> and
+      <strong>AZ-305 Azure Solutions Architect Expert</strong> certifications.
+      Scenario-first. Architect's elimination lens. No brain dumps.
+    </p>
+
+    <div class="hero-stats">
+      <div class="h-stat">
+        <span class="h-stat-num">2</span>
+        <span class="h-stat-label">Certifications</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-num">9</span>
+        <span class="h-stat-label">Exam Domains</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-num">75+</span>
+        <span class="h-stat-label">Practice Q&amp;As</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-num">30</span>
+        <span class="h-stat-label">Exam Traps</span>
+      </div>
+      <div class="h-stat">
+        <span class="h-stat-num">10</span>
+        <span class="h-stat-label">Decision Trees</span>
+      </div>
+    </div>
+
+    <div class="result-badge">
+      <span class="result-badge-icon">✅</span>
+      <span>
+        <strong>AZ-305 Renewal — 92%</strong>
+        <span> · March 11, 2026 · Valid → April 29, 2027 · Phil Myint</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- CERTIFICATION PATH -->
+  <section class="section" id="cert-path">
+    <div class="s-eyebrow">Certification Journey</div>
+    <h2>The Full Azure Path</h2>
+    <p class="s-desc">
+      Microsoft Azure certifications follow a structured path from fundamentals to expert level.
+      The AZ-305 Architect Expert requires the AZ-104 Administrator as a prerequisite.
+    </p>
+
+    <div class="cert-path-grid">
+      <div class="cert-card optional">
+        <div class="cert-card-code">AZ-900</div>
+        <div class="cert-card-name">Azure Fundamentals</div>
+        <span class="cert-card-tag tag-opt">Optional Entry</span>
+      </div>
+
+      <div class="path-arrow">→</div>
+
+      <div class="cert-card associate">
+        <div class="cert-card-code">AZ-104</div>
+        <div class="cert-card-name">Azure Administrator Associate</div>
+        <span class="cert-card-tag tag-prereq">Prerequisite</span>
+      </div>
+
+      <div class="path-arrow">→</div>
+
+      <div class="cert-card expert">
+        <div class="cert-card-code">AZ-305</div>
+        <div class="cert-card-name">Azure Solutions Architect Expert</div>
+        <span class="cert-card-tag tag-target">Target Exam</span>
+      </div>
+
+      <div class="path-arrow">→</div>
+
+      <div class="cert-card renewal">
+        <div class="cert-card-code">Renewal</div>
+        <div class="cert-card-name">Free Annual Assessment · ~26 Q · Pass: 57%+</div>
+        <span class="cert-card-tag tag-renewal">Yearly</span>
+      </div>
+    </div>
+
+    <div class="inline-note">
+      ⚠️ &nbsp;No negative marking on any Microsoft exam. Passing score for AZ-305: <strong>700 / 1000</strong>.
+      Renewal assessment is open-book, online, and free. Validity extends by 1 year on pass.
+    </div>
+
+    <!-- WAF Pillars -->
+    <h2 style="margin-top:40px; font-size:22px;">Well-Architected Framework Pillars</h2>
+    <p class="s-desc" style="margin-bottom:20px;">
+      Every AZ-305 design question maps to a WAF pillar. Understand which pillar each
+      architectural decision serves — the exam tests this explicitly.
+    </p>
+
+    <div class="waf-grid">
+      <div class="waf-card">
+        <span class="waf-icon">🛡️</span>
+        <div class="waf-name">Reliability</div>
+        <div class="waf-desc">HA/DR, redundancy, failover, graceful degradation</div>
+      </div>
+      <div class="waf-card">
+        <span class="waf-icon">🔒</span>
+        <div class="waf-name">Security</div>
+        <div class="waf-desc">Identity (least privilege), CMK, Private Link</div>
+      </div>
+      <div class="waf-card">
+        <span class="waf-icon">💰</span>
+        <div class="waf-name">Cost Optimisation</div>
+        <div class="waf-desc">Right-sizing, consumption models, lifecycle policies</div>
+      </div>
+      <div class="waf-card">
+        <span class="waf-icon">⚙️</span>
+        <div class="waf-name">Operational Excellence</div>
+        <div class="waf-desc">Azure Monitor, IaC, CI/CD, tagging strategy</div>
+      </div>
+      <div class="waf-card">
+        <span class="waf-icon">⚡</span>
+        <div class="waf-name">Performance Efficiency</div>
+        <div class="waf-desc">Caching (Redis), async messaging, auto-scaling, CDN</div>
+      </div>
+    </div>
+
+    <!-- Domain Overview Grid -->
+    <h2 style="margin-top:40px; font-size:22px;">AZ-305 Domain Weights</h2>
+    <div class="domain-grid">
+      <a href="#az305-d1" class="domain-card">
+        <div class="domain-card-header">
+          <span class="domain-card-icon">🔐</span>
+          <span class="domain-card-pct">25–30%</span>
+        </div>
+        <h4>Domain 1</h4>
+        <p>Identity, governance, and monitoring solutions</p>
+      </a>
+      <a href="#az305-d2" class="domain-card">
+        <div class="domain-card-header">
+          <span class="domain-card-icon">🗄️</span>
+          <span class="domain-card-pct">20–25%</span>
+        </div>
+        <h4>Domain 2</h4>
+        <p>Data storage solutions</p>
+      </a>
+      <a href="#az305-d3" class="domain-card">
+        <div class="domain-card-header">
+          <span class="domain-card-icon">⚡</span>
+          <span class="domain-card-pct">15–20%</span>
+        </div>
+        <h4>Domain 3</h4>
+        <p>Business continuity solutions</p>
+      </a>
+      <a href="#az305-d4" class="domain-card">
+        <div class="domain-card-header">
+          <span class="domain-card-icon">🏗️</span>
+          <span class="domain-card-pct">30–35%</span>
+        </div>
+        <h4>Domain 4 ← Highest</h4>
+        <p>Infrastructure solutions — compute, networking, app arch</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- PLACEHOLDER SECTIONS — will be populated module by module -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 OVERVIEW
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104">
+    <div class="s-eyebrow">Microsoft Certified: Azure Administrator Associate</div>
+    <h2>AZ-104 Exam Overview</h2>
+    <p class="s-desc">
+      Manage Azure subscriptions and resources, implement storage solutions, deploy and manage
+      virtual machines, configure virtual networks, and monitor the Azure environment.
+      This is the <strong>prerequisite</strong> for AZ-305.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Exam code</td><td class="hl">AZ-104</td></tr>
+          <tr><td>Full name</td><td>Microsoft Azure Administrator</td></tr>
+          <tr><td>Certification</td><td>Microsoft Certified: Azure Administrator Associate</td></tr>
+          <tr><td>Passing score</td><td class="hl">700 / 1000</td></tr>
+          <tr><td>Question count</td><td>40–60 (MCQ, case studies, drag-and-drop, PowerShell/CLI tasks)</td></tr>
+          <tr><td>Duration</td><td>100 minutes seat time</td></tr>
+          <tr><td>Validity</td><td>1 year · renew via free annual online assessment</td></tr>
+          <tr><td>Negative marking</td><td class="hl-g">None</td></tr>
+          <tr><td>Role focus</td><td>Day-to-day Azure administration (operate, not design)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Official Domain Breakdown</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Domain</th><th>Weight</th><th>Key Topics</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Manage Azure identities and governance</td><td class="hl">15–20%</td><td>Entra ID, RBAC, Policy, Locks, Tags</td></tr>
+          <tr><td>2</td><td>Implement and manage storage</td><td class="hl">15–20%</td><td>Storage accounts, Blob, Files, SAS, lifecycle</td></tr>
+          <tr><td>3</td><td>Deploy and manage Azure compute resources</td><td class="hl">20–25%</td><td>VMs, VMSS, ACI, ACR, App Service</td></tr>
+          <tr><td>4</td><td>Implement and manage virtual networking</td><td class="hl">20–25%</td><td>VNet, NSG, LB, App Gateway, DNS, VPN</td></tr>
+          <tr><td>5</td><td>Monitor and maintain Azure resources</td><td class="hl">10–15%</td><td>Azure Monitor, Backup, ASR, Service Health</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-tip">
+      <strong>AZ-104 vs AZ-305 focus:</strong> AZ-104 tests <em>how to configure</em> Azure services (portal, CLI, PowerShell, ARM templates).
+      AZ-305 tests <em>which service to choose</em> and why. The same services appear in both, but the question angle is different.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 DOMAIN 1 — IDENTITY & GOVERNANCE
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-d1">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-104 — Domain 1</div>
+        <h2>Identity &amp; Governance</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">15–20%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- Users & Groups -->
+    <div class="s-h3">Microsoft Entra ID — Users &amp; Groups</div>
+
+    <div class="s-h4">User Account Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Source</th><th>Created by</th><th>Auth location</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Cloud identity</td><td>Azure AD only</td><td>Admin in portal / CLI</td><td>Azure AD</td></tr>
+          <tr><td class="hl">Synchronized identity</td><td>On-prem AD via Azure AD Connect</td><td>AD Connect sync</td><td>On-prem (PTA) or Azure AD (PHS)</td></tr>
+          <tr><td class="hl">Guest user (B2B)</td><td>External Azure AD / MSA / IdP</td><td>Invite sent</td><td>External organisation's IdP</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Group Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Group type</th><th>Membership type</th><th>Key behaviour</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Security</td><td>Assigned</td><td>Manually add/remove members</td><td>RBAC, policy, resource access</td></tr>
+          <tr><td class="hl">Security</td><td>Dynamic User</td><td>Members auto-added via attribute rules (e.g. department = "Sales")</td><td>Auto-managed groups</td></tr>
+          <tr><td class="hl">Security</td><td>Dynamic Device</td><td>Devices auto-added via attributes (e.g. OS type)</td><td>Intune, Conditional Access</td></tr>
+          <tr><td class="hl">Microsoft 365</td><td>Assigned / Dynamic</td><td>Includes mailbox, SharePoint, Teams site</td><td>Collaboration (email, Teams)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      Dynamic membership rules require <strong>Azure AD Premium P1</strong> minimum. Dynamic groups cannot have manually-added members.
+    </div>
+
+    <!-- Managed Identity -->
+    <div class="s-h3">Managed Identity</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Lifecycle</th><th>Sharing</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">System-assigned</td>
+            <td>Tied to the Azure resource — deleted when resource is deleted</td>
+            <td>Cannot be shared; 1:1 with resource</td>
+            <td>Single resource needing Key Vault / storage access</td>
+          </tr>
+          <tr>
+            <td class="hl">User-assigned</td>
+            <td>Standalone resource — lifecycle managed independently</td>
+            <td>Can be shared across multiple resources</td>
+            <td>Multiple VMs needing same permissions; reusable identity</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body-text">
+      Managed Identities eliminate the need to store credentials in code. Azure automatically manages and rotates the
+      underlying certificate. Assign an Azure RBAC role to the identity to grant access to resources.
+    </p>
+
+    <!-- RBAC -->
+    <div class="s-h3">Azure RBAC</div>
+    <div class="s-h4">Scope Hierarchy</div>
+    <pre>Management Group  (broadest — RBAC cascades to all children)
+    └── Subscription
+            └── Resource Group
+                    └── Individual Resource  (narrowest)</pre>
+
+    <div class="s-h4">Common Built-in Roles</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Role</th><th>Can create/manage resources?</th><th>Can assign roles?</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Owner</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td>Full control including access management</td></tr>
+          <tr><td class="hl">Contributor</td><td class="hl-g">✓</td><td class="hl-r">✗</td><td>Developers, operators</td></tr>
+          <tr><td class="hl">Reader</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td>Auditors, view-only access</td></tr>
+          <tr><td class="hl">User Access Administrator</td><td class="hl-r">✗</td><td class="hl-g">✓</td><td>Grant access to others without resource ops</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Custom roles:</strong> Define in JSON using <code>Actions</code>, <code>NotActions</code>, <code>DataActions</code>, <code>NotDataActions</code>.
+      Hard limit: <strong>2,000 role assignments per subscription</strong>. Deny assignments always override allow assignments.
+    </div>
+
+    <!-- Resource Locks -->
+    <div class="s-h3">Resource Locks</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lock type</th><th>Prevents delete?</th><th>Prevents modify?</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">CanNotDelete</td><td class="hl-g">✓</td><td class="hl-r">✗</td><td>Allow changes but protect from accidental deletion</td></tr>
+          <tr><td class="hl">ReadOnly</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td>Freeze a resource entirely — read-only for all users</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body-text">
+      Locks apply to all users regardless of RBAC role — even Owners cannot delete a locked resource without first
+      removing the lock. Locks are inherited by child resources. Locks are set at RG or individual resource scope.
+    </p>
+
+    <!-- Azure Policy -->
+    <div class="s-h3">Azure Policy</div>
+    <div class="s-h4">Policy Effects (AZ-104 focus)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Effect</th><th>Administrator use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl-r">Deny</td><td>Prevent resources being created in disallowed regions; enforce required configs</td></tr>
+          <tr><td>Modify</td><td>Auto-add or enforce tags on all new resources (with remediation task for existing)</td></tr>
+          <tr><td>DeployIfNotExists</td><td>Auto-deploy Log Analytics agent on new VMs that don't have it</td></tr>
+          <tr><td>Audit</td><td>Report on non-compliant resources without blocking</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      Assign policies to a <strong>Management Group</strong> to cascade them automatically across all child subscriptions. Group related policies into an <strong>Initiative</strong> (policy set) for easier assignment and compliance tracking.
+    </div>
+
+    <!-- Tags -->
+    <div class="s-h3">Tags &amp; Cost Management</div>
+    <ul class="feat-list">
+      <li><strong>Tags</strong> are name-value pairs (e.g. <code>Environment: Production</code>, <code>CostCenter: 1234</code>) applied to resources, resource groups, or subscriptions.</li>
+      <li>Tags are <strong>not inherited</strong> from parent scope by default — must apply Policy (<code>Modify</code> or <code>Inherit</code> initiative) to propagate.</li>
+      <li>Maximum <strong>50 tags</strong> per resource. Tag name max 512 chars; value max 256 chars.</li>
+      <li><strong>Cost Management + Budgets</strong>: Set spending limits with alert thresholds. Budgets don't cap spending — they alert when thresholds are met.</li>
+      <li><strong>Azure Advisor</strong>: Recommendations on cost, security, reliability, performance, and operational excellence.</li>
+    </ul>
+
+    <div class="s-h3">Key Numbers — Domain 1</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">2,000</span><span class="kn-lbl">Max RBAC role assignments per subscription</span></div>
+      <div class="kn-item"><span class="kn-val">6</span><span class="kn-lbl">Management group max depth (below tenant root)</span></div>
+      <div class="kn-item"><span class="kn-val">50</span><span class="kn-lbl">Max tags per Azure resource</span></div>
+      <div class="kn-item"><span class="kn-val">P1</span><span class="kn-lbl">Minimum licence for dynamic group membership</span></div>
+      <div class="kn-item"><span class="kn-val">P2</span><span class="kn-lbl">Required for PIM and Identity Protection</span></div>
+      <div class="kn-item"><span class="kn-val">ReadOnly</span><span class="kn-lbl">Lock that prevents both modify and delete</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 DOMAIN 2 — STORAGE
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-d2">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-104 — Domain 2</div>
+        <h2>Implement &amp; Manage Storage</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">15–20%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <div class="s-h3">Storage Account Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Account type</th><th>Supported services</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">General Purpose v2 (GPv2)</td><td>Blob, Files, Queues, Tables</td><td>Standard default — use for most scenarios</td></tr>
+          <tr><td class="hl">FileStorage</td><td>Azure Files only</td><td>Premium file shares (NFS, high IOPS)</td></tr>
+          <tr><td class="hl">BlockBlobStorage</td><td>Block blobs, append blobs</td><td>Premium block blob performance</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Blob Access Tiers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Storage cost</th><th>Access cost</th><th>Min storage period</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="hl-g">Hot</td><td class="hl-r">Highest</td><td class="hl-g">Lowest</td><td>None</td><td>Frequently accessed data</td></tr>
+          <tr><td class="hl-y">Cool</td><td class="hl-y">Lower</td><td class="hl-y">Higher</td><td class="hl-y">30 days</td><td>Infrequently accessed (monthly)</td></tr>
+          <tr><td class="hl-y">Cold</td><td class="hl-y">Lower</td><td class="hl-r">Higher</td><td class="hl-y">90 days</td><td>Rarely accessed (quarterly)</td></tr>
+          <tr><td class="hl-r">Archive</td><td class="hl-g">Lowest</td><td class="hl-r">Highest + rehydration wait</td><td class="hl-r">180 days</td><td>Offline long-term retention (compliance, backup)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      Archive blobs are <strong>offline</strong> — must be rehydrated to Hot or Cool before reading (standard: up to 15 hours; high priority: under 1 hour but more expensive).
+      Lifecycle management policies automate tier transitions and deletion based on last-modified or last-accessed date.
+    </div>
+
+    <div class="s-h3">Storage Redundancy</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Option</th><th>Copies</th><th>Zone fault tolerance</th><th>Geo-redundancy</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">LRS</td><td>3</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td>Dev/test; cheapest; data can be recreated</td></tr>
+          <tr><td class="hl">ZRS</td><td>3</td><td class="hl-g">✓ (3 AZs)</td><td class="hl-r">✗</td><td>Regional compliance; zone-level HA</td></tr>
+          <tr><td class="hl">GRS</td><td>6</td><td class="hl-r">✗</td><td class="hl-y">✓ (read after failover)</td><td>Geo-redundancy; single DC in primary</td></tr>
+          <tr><td class="hl">GZRS</td><td>6</td><td class="hl-g">✓ (3 AZs)</td><td class="hl-y">✓ (read after failover)</td><td>Highest durability — zone + geo</td></tr>
+          <tr><td class="hl">RA-GRS / RA-GZRS</td><td>6</td><td>GRS: ✗ / GZRS: ✓</td><td class="hl-g">✓ always readable</td><td>Read-heavy; secondary always available</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Access Control</div>
+    <div class="s-h4">SAS Token Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>SAS type</th><th>Signed by</th><th>Scope</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Account SAS</td><td>Storage account key</td><td>Account-level; multiple services</td><td>Admin-level temporary access</td></tr>
+          <tr><td class="hl">Service SAS</td><td>Storage account key</td><td>Single service (blob/file/queue/table)</td><td>Delegated access to one service</td></tr>
+          <tr><td class="hl">User Delegation SAS</td><td>Azure AD credentials</td><td>Blob service only</td><td class="hl-g">Recommended — no account key exposure</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Access keys</strong> provide full account access. Store in Azure Key Vault. Rotate regularly — use the
+      "rotate" action so one key stays active while the other is regenerated. Disable key access entirely
+      to enforce Azure AD authentication.
+    </div>
+
+    <div class="s-h4">Blob Soft Delete &amp; Versioning</div>
+    <ul class="feat-list">
+      <li><strong>Blob soft delete:</strong> Deleted blobs retained for a configurable period (1–365 days) — recoverable in the portal or via API.</li>
+      <li><strong>Container soft delete:</strong> Same concept at container level.</li>
+      <li><strong>Blob versioning:</strong> Every write creates a new version. Previous versions are accessible and can be restored. Works alongside soft delete.</li>
+      <li><strong>Immutability (WORM):</strong> Time-based retention policies lock blobs — no delete or overwrite, even by admins. Used for compliance (SEC 17a-4, FINRA).</li>
+    </ul>
+
+    <div class="s-h4">Azure File Sync</div>
+    <ul class="feat-list">
+      <li>Sync on-premises Windows Server file shares with Azure Files cloud shares.</li>
+      <li><strong>Cloud tiering:</strong> Infrequently accessed files are recalled from Azure on demand — frees local disk space.</li>
+      <li><strong>Components:</strong> Storage Sync Service → Sync Group → Server Endpoint (on-prem) + Cloud Endpoint (Azure file share).</li>
+      <li>Supports <strong>multi-site sync</strong> — same share accessed from multiple on-prem locations and Azure simultaneously.</li>
+    </ul>
+
+    <div class="s-h3">Key Numbers — Domain 2</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">30 days</span><span class="kn-lbl">Cool tier minimum storage period</span></div>
+      <div class="kn-item"><span class="kn-val">90 days</span><span class="kn-lbl">Cold tier minimum storage period</span></div>
+      <div class="kn-item"><span class="kn-val">180 days</span><span class="kn-lbl">Archive tier minimum storage period</span></div>
+      <div class="kn-item"><span class="kn-val">~15 hrs</span><span class="kn-lbl">Archive standard rehydration time</span></div>
+      <div class="kn-item"><span class="kn-val">1–365</span><span class="kn-lbl">Blob soft delete retention (days)</span></div>
+      <div class="kn-item"><span class="kn-val">50 TB</span><span class="kn-lbl">Max blob size (block blob)</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 DOMAIN 3 — COMPUTE
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-d3">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-104 — Domain 3</div>
+        <h2>Deploy &amp; Manage Compute Resources</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">20–25%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- Virtual Machines -->
+    <div class="s-h3">Virtual Machines</div>
+
+    <div class="s-h4">VM Disk Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Disk</th><th>Persistent?</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">OS disk</td><td class="hl-g">✓</td><td>Managed disk; contains the OS and installed software</td></tr>
+          <tr><td class="hl">Data disks</td><td class="hl-g">✓</td><td>Managed disks; attached for application data. Can be added hot.</td></tr>
+          <tr><td class="hl-r">Temporary disk</td><td class="hl-r">✗ (lost on stop/deallocate)</td><td>Local SSD; for page files, swap, temp data. Not for production data.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      Data disks can be <strong>hot-attached</strong> (without stopping the VM) on most sizes.
+      A VM's <strong>VNet assignment is permanent</strong> after deployment — requires full redeploy to change.
+    </div>
+
+    <div class="s-h4">VM Extensions</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Extension</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Custom Script Extension (CSE)</td><td>Run a script (PowerShell/Bash) on the VM post-deployment — install software, configure settings</td></tr>
+          <tr><td class="hl">Desired State Configuration (DSC)</td><td>Enforce a declarative configuration state on Windows VMs using PowerShell DSC</td></tr>
+          <tr><td class="hl">Azure Monitor Agent (AMA)</td><td>Collect metrics and logs from the guest OS and send to Log Analytics / Azure Monitor</td></tr>
+          <tr><td class="hl">Dependency Agent</td><td>Map process and network connections for Azure Monitor VM Insights</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">VM Scale Sets (VMSS)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mode</th><th>Instance homogeneity</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Uniform orchestration</td><td>All instances identical (same image, same size)</td><td>Stateless web tiers, auto-scale pools</td></tr>
+          <tr><td class="hl">Flexible orchestration</td><td>Can mix instance types; VMs managed individually</td><td>Migration scenarios; mixed workloads</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body-text">VMSS auto-scales in/out based on metric thresholds (CPU, memory, queue depth, custom metrics). Scales out first (adds instances), then in after cool-down period.</p>
+
+    <!-- ARM & Bicep -->
+    <div class="s-h3">Infrastructure as Code</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Format</th><th>Idempotent</th><th>Key strength</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">ARM templates</td><td>JSON</td><td class="hl-g">✓</td><td>Native Azure; deployment history in portal; supports linked templates</td></tr>
+          <tr><td class="hl">Bicep</td><td>DSL (compiles to ARM JSON)</td><td class="hl-g">✓</td><td>Simpler syntax, type safety, VS Code IntelliSense</td></tr>
+          <tr><td>Azure CLI / PowerShell</td><td>Imperative script</td><td class="hl-r">✗</td><td>Quick ad-hoc operations</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Containers -->
+    <div class="s-h3">Container Services</div>
+
+    <div class="s-h4">Azure Container Registry (ACR) Tiers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Storage</th><th>Geo-replication</th><th>Webhooks</th></tr></thead>
+        <tbody>
+          <tr><td>Basic</td><td>10 GB</td><td class="hl-r">✗</td><td>✗</td></tr>
+          <tr><td>Standard</td><td>100 GB</td><td class="hl-r">✗</td><td>✓</td></tr>
+          <tr><td class="hl">Premium</td><td>500 GB</td><td class="hl-g">✓</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Azure Container Instances (ACI)</div>
+    <ul class="feat-list">
+      <li><strong>Container group:</strong> Logical unit hosting multiple containers on the same host. Share network (same IP + port space) and storage volumes.</li>
+      <li><strong>Restart policies:</strong> <code>Always</code> (default — restart on any exit) · <code>OnFailure</code> (restart only on non-zero exit) · <code>Never</code> (no restart)</li>
+      <li><strong>OS types:</strong> Linux or Windows (not mixed in same group).</li>
+      <li>Persistent storage: mount <strong>Azure Files</strong> volume for shared or durable data.</li>
+    </ul>
+
+    <!-- App Service -->
+    <div class="s-h3">Azure App Service</div>
+
+    <div class="s-h4">App Service Plan Tiers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Custom domain</th><th>Auto-scale</th><th>Deployment slots</th><th>VNet integration</th></tr></thead>
+        <tbody>
+          <tr><td>Free / Shared</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-r">✗</td></tr>
+          <tr><td>Basic</td><td class="hl-g">✓</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-r">✗</td></tr>
+          <tr><td>Standard</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td class="hl-g">✓ (up to 5)</td><td class="hl-r">✗</td></tr>
+          <tr><td class="hl">Premium</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td class="hl-g">✓ (up to 20)</td><td class="hl-g">✓</td></tr>
+          <tr><td class="hl">Isolated</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td class="hl-g">✓</td><td class="hl-g">✓ (ASE)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Deployment Slots</div>
+    <ul class="feat-list">
+      <li>Slots are independent instances of the app (e.g. production, staging, QA).</li>
+      <li><strong>Slot swap:</strong> Swap staging into production with zero downtime — Azure routes traffic to new slot while old slot stays available for rollback.</li>
+      <li><strong>Sticky settings:</strong> App settings/connection strings marked "slot setting" do not swap — they stay on the slot they're configured on.</li>
+      <li>New deployments always go to a non-production slot first for testing before swap.</li>
+    </ul>
+
+    <div class="s-h3">Key Numbers — Domain 3</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">20</span><span class="kn-lbl">Max deployment slots (App Service Premium)</span></div>
+      <div class="kn-item"><span class="kn-val">5</span><span class="kn-lbl">Max deployment slots (App Service Standard)</span></div>
+      <div class="kn-item"><span class="kn-val">500 GB</span><span class="kn-lbl">ACR Premium tier storage</span></div>
+      <div class="kn-item"><span class="kn-val">Hot-attach</span><span class="kn-lbl">Data disks can be added without VM downtime</span></div>
+      <div class="kn-item"><span class="kn-val">Permanent</span><span class="kn-lbl">VM VNet assignment — cannot change without redeploy</span></div>
+      <div class="kn-item"><span class="kn-val">Flexible</span><span class="kn-lbl">VMSS mode that allows mixed instance types</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 DOMAIN 4 — NETWORKING
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-d4">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-104 — Domain 4</div>
+        <h2>Implement &amp; Manage Virtual Networking</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">20–25%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- VNets -->
+    <div class="s-h3">Virtual Networks &amp; Subnets</div>
+
+    <div class="s-h4">Reserved IP Addresses per Subnet</div>
+    <p class="body-text">Azure reserves <strong>5 IP addresses</strong> per subnet — these cannot be assigned to resources:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Reserved address (example: 10.0.0.0/24)</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">10.0.0.0</td><td>Network address</td></tr>
+          <tr><td class="hl">10.0.0.1</td><td>Default gateway</td></tr>
+          <tr><td class="hl">10.0.0.2</td><td>DNS mapped to Azure DNS</td></tr>
+          <tr><td class="hl">10.0.0.3</td><td>Reserved for future use</td></tr>
+          <tr><td class="hl">10.0.0.255</td><td>Broadcast address</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Minimum usable subnet:</strong> /29 gives 8 IPs − 5 reserved = <strong>3 usable</strong>.
+      VNets cannot have overlapping address spaces when peering — plan CIDR carefully before deployment.
+    </div>
+
+    <div class="s-h4">Public IP Address SKUs</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Basic SKU</th><th>Standard SKU</th></tr></thead>
+        <tbody>
+          <tr><td>Allocation</td><td>Dynamic or Static</td><td class="hl">Static only</td></tr>
+          <tr><td>Zone redundant</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Secure by default</td><td class="hl-r">✗ (open by default)</td><td class="hl-g">✓ (NSG required to allow)</td></tr>
+          <tr><td>Required for</td><td>Legacy / Basic LB</td><td class="hl">Standard LB, App Gateway, NAT Gateway, Bastion</td></tr>
+          <tr><td>Status</td><td class="hl-r">Being retired Aug 2026</td><td class="hl-g">Recommended</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- NSGs -->
+    <div class="s-h3">Network Security Groups (NSG)</div>
+    <p class="body-text">
+      NSGs contain inbound and outbound security rules. Each rule has: <strong>priority</strong> (100–4096, lower = processed first),
+      source/destination (IP, CIDR, service tag, ASG), port, protocol (TCP/UDP/ICMP/Any), and action (Allow/Deny).
+      The first matching rule wins — Azure stops evaluating further rules.
+    </p>
+
+    <div class="s-h4">Default Inbound Rules (always present, cannot delete)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Priority</th><th>Name</th><th>Source</th><th>Dest</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>65000</td><td>AllowVNetInBound</td><td>VirtualNetwork</td><td>VirtualNetwork</td><td class="hl-g">Allow</td></tr>
+          <tr><td>65001</td><td>AllowAzureLoadBalancerInBound</td><td>AzureLoadBalancer</td><td>Any</td><td class="hl-g">Allow</td></tr>
+          <tr><td>65500</td><td>DenyAllInBound</td><td>Any</td><td>Any</td><td class="hl-r">Deny</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Application Security Groups (ASG):</strong> Tag VMs by workload (e.g. "WebTier", "DBTier") and use those tags in NSG rules instead of explicit IP addresses. Rules stay valid as VMs scale in/out.
+    </div>
+
+    <!-- VNet Peering -->
+    <div class="s-h3">VNet Peering</div>
+    <ul class="feat-list">
+      <li><strong>Regional peering:</strong> VNets in the same Azure region. Low latency, no bandwidth limits, traffic stays on Microsoft backbone.</li>
+      <li><strong>Global peering:</strong> VNets in different Azure regions. Same mechanism, minor performance difference.</li>
+      <li><strong>Non-transitive:</strong> If VNet A peers with B, and B peers with C — A and C cannot reach each other through B. Requires explicit A↔C peering (or a hub with routing).</li>
+      <li><strong>No overlapping address spaces</strong> — peered VNets must have unique CIDR ranges. Cannot be changed post-peering.</li>
+      <li>Peering is <strong>bidirectional</strong> but each direction must be explicitly created (both A→B and B→A).</li>
+    </ul>
+
+    <!-- Load Balancing -->
+    <div class="s-h3">Load Balancing Services</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Layer</th><th>Scope</th><th>SKU notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">Azure Load Balancer</td><td>L4 TCP/UDP</td><td>Regional</td>
+            <td>Standard SKU required for zones, outbound rules, HA ports</td>
+          </tr>
+          <tr>
+            <td class="hl">Application Gateway</td><td>L7 HTTP/S</td><td>Regional</td>
+            <td>WAF SKU adds OWASP rule sets (Detection / Prevention mode)</td>
+          </tr>
+          <tr>
+            <td class="hl">Azure Front Door</td><td>L7 HTTP/S</td><td>Global</td>
+            <td>Anycast, single hostname, CDN, WAF, session affinity</td>
+          </tr>
+          <tr>
+            <td class="hl">Traffic Manager</td><td>DNS</td><td>Global</td>
+            <td>Any protocol; routing methods: Priority, Weighted, Performance, Geographic</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DNS -->
+    <div class="s-h3">Azure DNS</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Zone type</th><th>Resolves from</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Public DNS zone</td><td>Internet</td><td>Host DNS records for a public domain (e.g. contoso.com)</td></tr>
+          <tr><td class="hl">Private DNS zone</td><td>Linked VNets only</td><td>Internal name resolution within VNets (e.g. internal.contoso.local)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Alias records:</strong> Azure DNS alias records can point to Azure resources (Public IPs, Traffic Manager, CDN) and update automatically if the resource's IP changes — unlike CNAME records which need manual updates.
+    </div>
+
+    <!-- Network Watcher -->
+    <div class="s-h3">Azure Network Watcher — Diagnostic Tools</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Answers</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">IP Flow Verify</td><td>"Is this traffic allowed or blocked?" — checks NSG rules for a specific flow (source IP, dest IP, port, protocol)</td></tr>
+          <tr><td class="hl">Next Hop</td><td>"Where does this packet go next?" — shows the next-hop type and address for a given source/destination</td></tr>
+          <tr><td class="hl">Connection Monitor</td><td>Continuous end-to-end connectivity monitoring between source and destination with latency metrics</td></tr>
+          <tr><td class="hl">NSG Flow Logs</td><td>Log all flows allowed/denied by NSGs — stored in Azure Storage; used for traffic analysis</td></tr>
+          <tr><td class="hl">Packet Capture</td><td>Capture packets to/from a VM NIC for deep traffic analysis</td></tr>
+          <tr><td class="hl">VPN Troubleshoot</td><td>Diagnose VPN gateway and connection health</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Key Numbers — Domain 4</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">5</span><span class="kn-lbl">Reserved IPs per subnet (not usable for resources)</span></div>
+      <div class="kn-item"><span class="kn-val">3</span><span class="kn-lbl">Usable IPs in smallest practical subnet (/29)</span></div>
+      <div class="kn-item"><span class="kn-val">100–4096</span><span class="kn-lbl">NSG rule priority range (lower = higher priority)</span></div>
+      <div class="kn-item"><span class="kn-val">Non-transitive</span><span class="kn-lbl">VNet peering — A↔B and B↔C does not imply A↔C</span></div>
+      <div class="kn-item"><span class="kn-val">Aug 2026</span><span class="kn-lbl">Basic Public IP SKU retirement date</span></div>
+      <div class="kn-item"><span class="kn-val">/27</span><span class="kn-lbl">Minimum subnet size for Azure Bastion</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 DOMAIN 5 — MONITOR & MAINTAIN
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-d5">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-104 — Domain 5</div>
+        <h2>Monitor &amp; Maintain Azure Resources</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">10–15%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- Azure Monitor -->
+    <div class="s-h3">Azure Monitor</div>
+
+    <div class="s-h4">Diagnostic Settings</div>
+    <p class="body-text">
+      Enable diagnostic settings on an Azure resource to route platform logs and metrics to one or more destinations.
+      Each resource can have <strong>up to 5 diagnostic settings</strong>.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Destination</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Log Analytics Workspace</td><td>Query with KQL; set log-based alerts; long-term analysis</td></tr>
+          <tr><td class="hl">Azure Storage Account</td><td>Long-term archival at low cost</td></tr>
+          <tr><td class="hl">Azure Event Hubs</td><td>Stream to SIEM, third-party tools</td></tr>
+          <tr><td class="hl">Partner solution (Datadog, etc.)</td><td>Direct integration with monitoring partners</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Alert Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Alert type</th><th>Source</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Metric alert</td><td>Azure Monitor Metrics</td><td>CPU%, DTU, bytes — numerical thresholds</td></tr>
+          <tr><td class="hl">Log alert</td><td>Log Analytics (KQL query)</td><td>Custom conditions from log data</td></tr>
+          <tr><td class="hl">Activity Log alert</td><td>Azure Activity Log</td><td>Control plane events (resource created, deleted, RBAC change)</td></tr>
+          <tr><td class="hl">Service Health alert</td><td>Azure Service Health</td><td>Azure outages, planned maintenance, health advisories</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Action Groups</strong> define what happens when an alert fires: Email/SMS/voice · Webhook · Azure Function ·
+      Logic App · Automation Runbook · ITSM connector · Push notification. One action group can be shared across many alert rules.
+    </div>
+
+    <!-- Service Health -->
+    <div class="s-h3">Azure Service Health</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Shows</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Service Issues</td><td>Active Azure outages affecting your subscriptions</td></tr>
+          <tr><td class="hl">Planned Maintenance</td><td>Upcoming Microsoft maintenance that may affect your resources</td></tr>
+          <tr><td class="hl">Health Advisories</td><td>Feature deprecations, required actions, breaking changes</td></tr>
+          <tr><td class="hl">Resource Health</td><td>Health of individual Azure resources (e.g. is this specific VM healthy?)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Backup -->
+    <div class="s-h3">Azure Backup</div>
+
+    <div class="s-h4">Recovery Services Vault — Supported Workloads</div>
+    <ul class="feat-list">
+      <li><strong>Azure VMs</strong> — application-consistent snapshots via VSS (Windows) or pre/post scripts (Linux).</li>
+      <li><strong>SQL Server in VM</strong> — transaction log backups for low RPO (up to every 15 min).</li>
+      <li><strong>Azure Files</strong> — share-level and file-level snapshots.</li>
+      <li><strong>SAP HANA in VM</strong> — native HANA streaming backup.</li>
+    </ul>
+
+    <div class="s-h4">Restore Options for Azure VM Backup</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Restore type</th><th>What it restores</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Create new VM</td><td>Full VM from backup point</td><td>Full DR — restore to new VM</td></tr>
+          <tr><td class="hl">Replace existing disk</td><td>OS or data disk only</td><td>Replace a corrupted disk in-place</td></tr>
+          <tr><td class="hl">File recovery</td><td>Mount the backup as a volume; browse and copy individual files</td><td class="hl-g">Recover specific files without rebuilding the VM</td></tr>
+          <tr><td class="hl">Cross-region restore</td><td>Restore to paired secondary region</td><td>DR to secondary region (requires GRS vault)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ASR basics -->
+    <div class="s-h3">Azure Site Recovery (ASR) — Administrator View</div>
+    <ul class="feat-list">
+      <li><strong>Replication:</strong> Continuously replicate Azure VMs to a secondary region. RPO ~30 seconds.</li>
+      <li><strong>Test failover:</strong> Spin up recovered VMs in an isolated test VNet — production replication continues unaffected.</li>
+      <li><strong>Planned failover:</strong> Controlled, zero data loss (replicated fully first). Used for planned migrations or region evacuations.</li>
+      <li><strong>Failover (unplanned):</strong> Emergency DR — small data loss possible depending on replication lag.</li>
+      <li><strong>Recovery Plans:</strong> Orchestrate multi-VM failover in a defined sequence with pre/post runbook hooks.</li>
+    </ul>
+
+    <div class="s-h4">Managed Disk Snapshots</div>
+    <p class="body-text">
+      Point-in-time snapshots of managed disks. Stored as page blobs in Azure Storage.
+      Use for quick backups before risky operations. Not a replacement for Azure Backup — no
+      retention policies, scheduling, or application-consistent guarantees.
+    </p>
+
+    <div class="s-h3">Key Numbers — Domain 5</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">5</span><span class="kn-lbl">Max diagnostic settings per Azure resource</span></div>
+      <div class="kn-item"><span class="kn-val">93 days</span><span class="kn-lbl">Azure Monitor Metrics default retention</span></div>
+      <div class="kn-item"><span class="kn-val">30 days</span><span class="kn-lbl">Log Analytics default retention (up to 730)</span></div>
+      <div class="kn-item"><span class="kn-val">~30s</span><span class="kn-lbl">ASR RPO for Azure VM replication</span></div>
+      <div class="kn-item"><span class="kn-val">14 days</span><span class="kn-lbl">Azure Backup soft delete retention</span></div>
+      <div class="kn-item"><span class="kn-val">15 min</span><span class="kn-lbl">SQL Server in VM — min backup frequency (log)</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-104 PRACTICE QUESTIONS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az104-quiz">
+    <div class="s-eyebrow">AZ-104 — Practice</div>
+    <h2>AZ-104 Practice Questions</h2>
+    <p class="s-desc">15 scenario-based questions. Work through each one before revealing the answer.</p>
+
+    <div class="quiz-meta">
+      <span>15 questions · Click each question to reveal the answer and explanation</span>
+    </div>
+
+    <div class="quiz-native">
+
+      <details>
+        <summary>
+          <span class="q-num">1</span>
+          <span>A company needs to prevent all Azure administrators from accidentally deleting a critical production storage account, while still allowing configuration changes. Which resource lock type should you apply?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>CanNotDelete lock.</strong><br><br>
+            CanNotDelete prevents deletion of the resource by any user — even Owners — but still allows read and write operations (configuration changes, data uploads, etc.). ReadOnly would also prevent the deletion, but it blocks all write operations too, which would prevent legitimate configuration changes. Since the requirement is to allow changes but prevent deletion, CanNotDelete is the correct and least-restrictive option.
+          </div>
+          <div class="a-rule">Rule: CanNotDelete = block delete only. ReadOnly = block delete AND modify.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">2</span>
+          <span>Your organisation wants all newly created Azure resources to automatically have a "CostCenter" tag applied. Resources missing the tag must be auto-remediated without blocking creation. Which Azure Policy effect should you use?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Modify.</strong><br><br>
+            The Modify effect adds, updates, or removes tags on resources at create or update time. When paired with a remediation task, it also fixes existing non-compliant resources. The key word "auto-remediated without blocking" eliminates Deny (which blocks creation). Append can add properties but cannot modify existing tag values. DeployIfNotExists deploys a related resource — it is not used for tag enforcement.
+          </div>
+          <div class="a-rule">Rule: Auto-add or fix tags without blocking = Modify. Block creation = Deny.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">3</span>
+          <span>A compliance team requires financial records stored in Azure Blob Storage to be retained for 7 years with no possibility of deletion or modification, even by administrators. Which feature enforces this?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Immutability policy (time-based retention — WORM).</strong><br><br>
+            A time-based WORM (Write Once Read Many) immutability policy locks blobs for a defined retention period. No user — including global admins — can delete or overwrite blobs during this period. This satisfies SEC 17a-4, FINRA, and similar compliance requirements. Soft delete only protects for 14 days (configurable max 365). Resource locks protect at the resource level, not the data level. Lifecycle management automates tiering but doesn't prevent deletion.
+          </div>
+          <div class="a-rule">Rule: Immutable data retention for compliance = WORM immutability policy, not soft delete or lifecycle management.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">4</span>
+          <span>A company has 5 Azure subscriptions across 3 business units. They want to apply a common set of Azure Policy assignments and RBAC roles to all subscriptions with the least administrative effort. What should they implement?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Management Groups.</strong><br><br>
+            Management Groups provide a scope above subscriptions. Policy and RBAC assignments at the Management Group level automatically cascade to all child subscriptions, resource groups, and resources. Without management groups, each subscription would require individual assignment — 5× the management overhead. Management groups support a maximum of 6 levels of depth below the tenant root.
+          </div>
+          <div class="a-rule">Rule: Apply policy/RBAC to multiple subscriptions at once = Management Groups.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">5</span>
+          <span>An Azure VM needs to authenticate to Azure Key Vault to retrieve secrets at startup. You must avoid storing credentials in the VM or in code. What is the recommended approach?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>System-assigned Managed Identity on the VM, with Key Vault access granted via RBAC (Key Vault Secrets User role).</strong><br><br>
+            Managed Identity provides an automatically managed Azure AD identity for the VM. Azure handles credential rotation transparently. The VM can obtain a token from the Instance Metadata Service (IMDS) without storing any credentials. Assign the Key Vault Secrets User role to the managed identity at the Key Vault scope. No secrets are ever stored in code or config files.
+          </div>
+          <div class="a-rule">Rule: No credentials in code + Azure service access = Managed Identity.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">6</span>
+          <span>A development team wants to deploy and test a new version of their App Service web application without taking production offline. They need to verify the new version works before making it live. Which feature enables this?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Deployment slots (requires Standard tier or higher).</strong><br><br>
+            Deploy the new version to a staging slot, run smoke tests, then swap staging into production with zero downtime. The swap is instant — Azure routes traffic to the new slot while the old slot remains available for rollback. App settings marked as "slot settings" stay on their configured slot and don't swap with the app — useful for environment-specific connection strings. Requires Standard tier (5 slots) or Premium (20 slots).
+          </div>
+          <div class="a-rule">Rule: Zero-downtime deployment with rollback capability = Deployment Slots.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">7</span>
+          <span>A storage account holds 50 TB of sensor logs. Logs older than 30 days are rarely accessed; logs older than 90 days are never accessed. You must minimise storage costs automatically. What should you configure?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Azure Blob Storage lifecycle management policy.</strong><br><br>
+            Create a rule that transitions blobs to Cool tier after 30 days of last modification, and to Archive tier after 90 days. Optionally, add a delete action after the compliance retention period. Lifecycle management policies run daily and automatically move blobs between tiers based on age or last access time — no manual intervention. This is the cost-efficient alternative to keeping all data in Hot tier.
+          </div>
+          <div class="a-rule">Rule: Automatic cost-based blob tier transitions = Lifecycle management policy.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">8</span>
+          <span>An administrator cannot connect from a VM in VNet-A to a VM in VNet-C. VNet-A is peered with VNet-B, and VNet-B is peered with VNet-C. All peerings show as Connected. What is the issue?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>VNet peering is non-transitive. A→B and B→C does not create A→C connectivity.</strong><br><br>
+            Each peering is a direct, point-to-point connection. Traffic from A cannot transit through B to reach C — Azure does not route peering traffic transitively. To connect A and C, you must either: (1) create an explicit A↔C peering, or (2) deploy a hub VNet with a Network Virtual Appliance (NVA) or Azure Firewall and use UDRs to route A→hub→C.
+          </div>
+          <div class="a-rule">Rule: VNet peering is non-transitive. Explicit peering or hub-and-spoke routing required for full mesh.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">9</span>
+          <span>An NSG has these inbound rules: Priority 200 – Allow TCP 443 from Any; Priority 300 – Deny All from Any. A request arrives on port 80. What happens?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>The traffic is denied by the default DenyAllInBound rule (priority 65500).</strong><br><br>
+            NSG rules are processed in priority order (lowest number first). Priority 200 allows TCP 443 only — port 80 doesn't match. Priority 300 denies all — port 80 matches here, so traffic is denied. (Even if Priority 300 wasn't present, the built-in DenyAllInBound at 65500 would deny it.) The key concept: the first matching rule wins. Port 80 doesn't match rule 200, so processing continues to rule 300 which denies it.
+          </div>
+          <div class="a-rule">Rule: NSG processes rules lowest priority number first. First match wins — stops evaluating.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">10</span>
+          <span>An administrator needs to verify why an Azure VM cannot make an outbound connection to a specific external IP on port 443. The VM has an NSG applied. Which Network Watcher tool should they use?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>IP Flow Verify.</strong><br><br>
+            IP Flow Verify checks whether a specific traffic flow (source IP, destination IP, port, protocol, direction) is allowed or denied by the NSG rules applied to a VM. It instantly shows which NSG rule is responsible for allowing or blocking the traffic — without needing to manually parse all NSG rules. Next Hop shows the routing path, not NSG evaluation. Connection Monitor provides ongoing monitoring, not one-time diagnostics.
+          </div>
+          <div class="a-rule">Rule: "Is this traffic blocked by NSG?" = IP Flow Verify. "Where does this traffic go?" = Next Hop.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">11</span>
+          <span>All traffic from a subnet to the internet must be inspected by an Azure Firewall deployed in a hub VNet. The spoke subnet is peered to the hub. Currently traffic bypasses the firewall and goes directly to the internet. What must you configure?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>User Defined Route (UDR) on the spoke subnet with a default route (0.0.0.0/0) pointing to the Azure Firewall's private IP address as the next hop.</strong><br><br>
+            By default, Azure routes traffic between peered VNets directly and sends internet traffic out the system default gateway — it does not automatically route through the hub firewall. A UDR overrides system routing. Setting 0.0.0.0/0 → Virtual Appliance (Firewall private IP) forces all outbound traffic through the firewall. NSGs filter traffic but cannot change the routing path.
+          </div>
+          <div class="a-rule">Rule: Force traffic through firewall/NVA = UDR. NSGs cannot change routing paths.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">12</span>
+          <span>A company needs to back up 50 Azure VMs and run application-consistent backups of SQL Server running inside one of those VMs. Which vault type supports both workloads?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Recovery Services Vault.</strong><br><br>
+            Recovery Services Vault supports Azure VMs, SQL Server in VMs, Azure Files, and SAP HANA in VMs. Backup Vault supports Azure Managed Disks, Azure Blobs, and Azure Database for PostgreSQL — it does not support Azure VMs or SQL in VMs. Since both workloads (VMs + SQL in VM) require Recovery Services Vault, that is the only option that satisfies the full requirement.
+          </div>
+          <div class="a-rule">Rule: Azure VMs + SQL in VM = Recovery Services Vault. Managed Disks + Blobs = Backup Vault.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">13</span>
+          <span>An administrator accidentally deleted several critical files from an Azure Files share 2 days ago. The share has soft delete enabled with a 7-day retention. Can the files be recovered, and how?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Yes — recover the soft-deleted share in the Azure portal or via Azure CLI/PowerShell.</strong><br><br>
+            Soft delete retains deleted Azure Files shares (and their contents) for the configured retention period (1–365 days). At 2 days, the files are well within the 7-day window and are in a "soft deleted" state. Navigate to Storage Account → File shares → show deleted shares → select the share → Undelete. The share and all its files are restored to the state at the time of deletion. After the retention period, the data is permanently purged.
+          </div>
+          <div class="a-rule">Rule: Soft delete = recoverable within retention window. Always verify soft delete is enabled on production shares.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">14</span>
+          <span>A company's EU data residency policy requires that all Azure Storage data must remain within the EU region. Availability Zone resilience is also required. Which redundancy option should you choose?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>ZRS (Zone-Redundant Storage).</strong><br><br>
+            Regional compliance immediately eliminates GRS, GZRS, RA-GRS, and RA-GZRS — all replicate data to a secondary Azure region outside the EU. Remaining options: LRS (single datacenter, no zone resilience) and ZRS (3 zones within one region). Since AZ resilience is required, ZRS is the answer. ZRS replicates 3 copies across 3 physically separate datacenters within the same region — surviving a datacenter failure without leaving the region.
+          </div>
+          <div class="a-rule">Rule: Regional compliance → eliminate all geo-redundant options. Zone HA needed → ZRS over LRS.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="q-num">15</span>
+          <span>After deploying a new Azure VM, the team needs to automatically install IIS and configure a custom website without logging into the VM. The configuration must run immediately post-deployment. What is the recommended approach?</span>
+          <span class="q-chevron">▼</span>
+        </summary>
+        <div class="q-body">
+          <div class="a-label">Answer</div>
+          <div class="a-text">
+            <strong>Custom Script Extension (CSE).</strong><br><br>
+            The Custom Script Extension downloads and executes a script (PowerShell for Windows, Bash for Linux) on the VM post-deployment. It can install IIS (<code>Install-WindowsFeature -Name Web-Server</code>), copy website content from Azure Blob Storage, and configure settings — all without RDP/SSH access. CSE can be applied at deployment time via ARM template, Azure CLI, or the portal. Desired State Configuration (DSC) is another option but requires a DSC configuration file; CSE is simpler for straightforward install-and-configure tasks.
+          </div>
+          <div class="a-rule">Rule: Post-deployment automated script on a VM = Custom Script Extension.</div>
+        </div>
+      </details>
+
+    </div><!-- /quiz-native -->
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-305 OVERVIEW
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az305">
+    <div class="s-eyebrow">Microsoft Certified: Azure Solutions Architect Expert</div>
+    <h2>AZ-305 Exam Overview</h2>
+    <p class="s-desc">
+      Translate business requirements into Azure infrastructure designs aligned to the
+      Well-Architected Framework and Cloud Adoption Framework. Partner with developers,
+      administrators, security engineers, and data engineers.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Exam code</td><td class="hl">AZ-305</td></tr>
+          <tr><td>Full name</td><td>Designing Microsoft Azure Infrastructure Solutions</td></tr>
+          <tr><td>Certification</td><td>Microsoft Certified: Azure Solutions Architect Expert</td></tr>
+          <tr><td>Passing score</td><td class="hl">700 / 1000</td></tr>
+          <tr><td>Question count</td><td>40–60 (MCQ, case studies, drag-and-drop)</td></tr>
+          <tr><td>Duration</td><td>120 minutes seat time (~140 min total appointment)</td></tr>
+          <tr><td>Prerequisite</td><td>AZ-104: Microsoft Azure Administrator (or legacy path)</td></tr>
+          <tr><td>Validity</td><td>1 year · renew via free annual online assessment</td></tr>
+          <tr><td>Last English update</td><td>October 18, 2024 (significant) · Reviewed Jan 14, 2026</td></tr>
+          <tr><td>Negative marking</td><td class="hl-g">None</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-tip">
+      <strong>Tip:</strong> Flag questions for review within a case study — you cannot return across sections once you move on.
+    </div>
+
+    <div class="s-h3">Official Domain Breakdown</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Domain</th><th>Weight</th><th>Key Services</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Design identity, governance, and monitoring solutions</td><td class="hl">25–30%</td><td>Entra ID, RBAC, Policy, Monitor</td></tr>
+          <tr><td>2</td><td>Design data storage solutions</td><td class="hl">20–25%</td><td>SQL DB/MI, Cosmos DB, Blob, ADLS</td></tr>
+          <tr><td>3</td><td>Design business continuity solutions</td><td class="hl">15–20%</td><td>AZs, ASR, Backup, RTO/RPO</td></tr>
+          <tr><td>4</td><td>Design infrastructure solutions</td><td class="hl">30–35% ← highest</td><td>Compute, networking, app arch, data integration</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Renewal Assessment</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Format</td><td>~26 scenario-based questions, open-book, online</td></tr>
+          <tr><td>Pass threshold</td><td class="hl">57%+</td></tr>
+          <tr><td>Cost</td><td class="hl-g">Free</td></tr>
+          <tr><td>Domains covered</td><td>All 7 original renewal domains (storage, HA/DR, compute, networking, data integration)</td></tr>
+          <tr><td>Phil's result</td><td class="hl-g">92% · March 11, 2026 · Valid → April 29, 2027</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Core Study Principle</div>
+    <p class="body-text">
+      <strong>Architect's elimination model:</strong> Every scenario has hard constraints (storage ceilings,
+      protocol requirements, regional compliance) and soft attributes (cost, performance, simplicity).
+      Apply hard constraints first — eliminate before optimising. This is how the exam tests you.
+    </p>
+    <pre>Hard constraint (Gate 1) → eliminate impossible options
+Soft attribute (Gate 2)  → select best among survivors
+Cost minimisation        → always last, never first</pre>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-305 DOMAIN 1
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az305-d1">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Domain 1</div>
+        <h2>Identity, Governance &amp; Monitoring</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">25–30%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- Entra ID -->
+    <div class="s-h3">Microsoft Entra ID (Azure Active Directory)</div>
+    <p class="body-text">Cloud-based identity and access management — the foundation of all Azure authentication and authorisation.</p>
+
+    <div class="s-h4">Identity Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Where identities live</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Cloud identity</td><td>Azure AD only</td><td>Admin accounts created in the portal</td></tr>
+          <tr><td>Directory-synchronized</td><td>On-prem AD → Azure AD via AD Connect</td><td>Existing corporate employees</td></tr>
+          <tr><td>Guest users (B2B)</td><td>External directory</td><td>Partner organisation collaborators</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Hybrid Identity Sync Options</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>How it works</th><th>Resilience</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">Password Hash Sync (PHS)</td>
+            <td>Hash of on-prem password synced to Azure AD</td>
+            <td class="hl-g">Highest — works if on-prem AD is down</td>
+            <td>Recommended default</td>
+          </tr>
+          <tr>
+            <td>Pass-Through Auth (PTA)</td>
+            <td>Auth forwarded to on-prem AD via agent</td>
+            <td class="hl-y">Lower — on-prem dependency</td>
+            <td>Must enforce on-prem password policies</td>
+          </tr>
+          <tr>
+            <td>Federation (AD FS)</td>
+            <td>Full token-based federation</td>
+            <td class="hl-r">Complex; on-prem dependency</td>
+            <td>Legacy claims requirements, SmartCard</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Licence Tiers — Key Exam Differentiators</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Free</th><th>P1</th><th>P2</th></tr></thead>
+        <tbody>
+          <tr><td>MFA</td><td class="hl-g">✓ (per-user)</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>Conditional Access</td><td class="hl-r">✗</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>SSPR (Self-Service Password Reset)</td><td class="hl-r">✗</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>Group-based licensing</td><td class="hl-r">✗</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>PIM</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Identity Protection</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Access Reviews</td><td class="hl-r">✗</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RBAC -->
+    <div class="s-h3">Azure RBAC</div>
+
+    <div class="s-h4">Scope Hierarchy (broadest → narrowest)</div>
+    <pre>Management Group
+    └── Subscription
+            └── Resource Group
+                    └── Resource (individual)
+
+Deny assignments override allow.
+Inheritance flows downward — assign at highest scope to cascade.
+Use narrowest scope possible (least privilege).</pre>
+
+    <div class="s-h4">Key Built-in Roles</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Role</th><th>Permissions</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Owner</td><td>Full access + manage access</td><td>Full resource + delegation control</td></tr>
+          <tr><td class="hl">Contributor</td><td>Create and manage all resources; no access management</td><td>Developers, operators</td></tr>
+          <tr><td class="hl">Reader</td><td>View only</td><td>Auditors, read-only access</td></tr>
+          <tr><td class="hl">User Access Administrator</td><td>Manage access only; no resource actions</td><td>Delegation without operational access</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-tip">
+      RBAC limit: <strong>2,000 role assignments per subscription</strong> · <strong>500 per management group</strong>.
+      Custom roles define <code>Actions</code>, <code>NotActions</code>, <code>DataActions</code>,
+      <code>NotDataActions</code>, and <code>AssignableScopes</code> in JSON.
+      Create at management group scope for enterprise-wide availability.
+    </div>
+
+    <!-- Management Groups -->
+    <div class="s-h3">Management Groups</div>
+    <pre>Tenant Root Group
+    ├── Production MG  →  RBAC + Policy cascade to all children
+    │   ├── Corp-Prod-East  (subscription)
+    │   └── Corp-Prod-West  (subscription)
+    ├── Non-Production MG
+    │   └── Corp-Dev        (subscription)
+    └── Sandbox MG
+        └── Corp-Sandbox    (subscription)</pre>
+
+    <p class="body-text">
+      <strong>Maximum depth: 6 levels</strong> below the tenant root group. Policy and RBAC assigned at MG level
+      cascade to all descendant subscriptions and resources. A subscription can belong to
+      <strong>only one management group</strong> at a time.
+    </p>
+
+    <!-- Azure Policy -->
+    <div class="s-h3">Azure Policy</div>
+
+    <div class="s-h4">Policy Effects (strongest → weakest enforcement)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Effect</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td class="hl-r">Deny</td><td>Block resource creation/update that violates policy</td></tr>
+          <tr><td>Append</td><td>Add required fields/properties to the request</td></tr>
+          <tr><td>Modify</td><td>Add/modify/remove tags or properties at create/update time</td></tr>
+          <tr><td>DeployIfNotExists</td><td>Deploy a related resource if condition not met (with remediation task)</td></tr>
+          <tr><td>AuditIfNotExists</td><td>Audit (log) if a related resource does not exist</td></tr>
+          <tr><td>Audit</td><td>Log non-compliance — does not block creation</td></tr>
+          <tr><td>Disabled</td><td>Skip policy evaluation entirely</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-trap">
+      <strong>Exam trap:</strong> <code>Deny</code> is the <em>only</em> effect that actively prevents a non-compliant resource from being created.
+      Audit and AuditIfNotExists only log. Modify auto-remediates <em>tags</em> (not Deny).
+      DeployIfNotExists auto-deploys a related resource — not for blocking.
+    </div>
+
+    <!-- Azure Monitor -->
+    <div class="s-h3">Azure Monitor</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Data type</th><th>Retention</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">Metrics</td>
+            <td>Numerical time-series</td>
+            <td class="hl">93 days</td>
+            <td>CPU%, bytes, latency, request counts</td>
+          </tr>
+          <tr>
+            <td class="hl">Log Analytics</td>
+            <td>Structured log data (KQL)</td>
+            <td>30–730 days (configurable)</td>
+            <td>Query across resources via KQL</td>
+          </tr>
+          <tr>
+            <td class="hl">Application Insights</td>
+            <td>APM traces, exceptions, dependencies</td>
+            <td class="hl">90 days</td>
+            <td>Web app performance, distributed tracing</td>
+          </tr>
+          <tr>
+            <td>Alerts</td>
+            <td>Triggered rules</td>
+            <td>N/A</td>
+            <td>Notify or act on threshold breach</td>
+          </tr>
+          <tr>
+            <td>Workbooks</td>
+            <td>Interactive reports</td>
+            <td>N/A</td>
+            <td>Combine metrics + log data in one view</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">KQL Query Examples</div>
+    <pre>// Errors in last 24 hours grouped by type
+AppExceptions
+| where TimeGenerated > ago(24h)
+| summarize count() by problemId
+| order by count_ desc
+
+// VMs where average CPU exceeded 80% in 5-min windows
+Perf
+| where CounterName == "% Processor Time" and CounterValue > 80
+| summarize avg(CounterValue) by Computer, bin(TimeGenerated, 5m)</pre>
+
+    <!-- Defender for Cloud -->
+    <div class="s-h3">Microsoft Defender for Cloud</div>
+    <p class="body-text">Unified cloud security management (CSPM + CWPP) across Azure, on-premises, and multi-cloud (AWS/GCP).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Capability</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Secure Score</td><td>0–100 posture metric — higher = more secure configuration</td></tr>
+          <tr><td>Security recommendations</td><td>Actionable hardening items with effort and impact ratings</td></tr>
+          <tr><td>Regulatory compliance</td><td>Map posture to CIS, NIST, ISO 27001, PCI-DSS, SOC frameworks</td></tr>
+          <tr><td>Defender plans</td><td>Per-workload threat protection (VMs, SQL, Containers, Storage, App Service)</td></tr>
+          <tr><td>Threat alerts</td><td>Real-time detection and incident correlation</td></tr>
+          <tr><td>Attack path analysis</td><td>Visualise lateral movement risk across resources</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Key Numbers D1 -->
+    <div class="s-h3">Key Numbers — Domain 1</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">6</span><span class="kn-lbl">Management group max depth below tenant root</span></div>
+      <div class="kn-item"><span class="kn-val">2,000</span><span class="kn-lbl">RBAC assignments per subscription</span></div>
+      <div class="kn-item"><span class="kn-val">500</span><span class="kn-lbl">RBAC assignments per management group</span></div>
+      <div class="kn-item"><span class="kn-val">93 days</span><span class="kn-lbl">Azure Monitor Metrics default retention</span></div>
+      <div class="kn-item"><span class="kn-val">30 days</span><span class="kn-lbl">Log Analytics default retention (up to 730)</span></div>
+      <div class="kn-item"><span class="kn-val">90 days</span><span class="kn-lbl">Application Insights default retention</span></div>
+      <div class="kn-item"><span class="kn-val">P1</span><span class="kn-lbl">Minimum licence for Conditional Access &amp; SSPR</span></div>
+      <div class="kn-item"><span class="kn-val">P2</span><span class="kn-lbl">Required for PIM and Identity Protection</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-305 DOMAIN 2
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az305-d2">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Domain 2</div>
+        <h2>Data Storage Solutions</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">20–25%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- SQL -->
+    <div class="s-h3">Relational Data — Azure SQL</div>
+
+    <div class="s-h4">SQL Database vs SQL Managed Instance — Instance-Scoped Features</div>
+    <div class="callout callout-trap">
+      <strong>Architect rule:</strong> ANY instance-scoped feature → answer is always <strong>SQL Managed Instance</strong>.
+      All Azure SQL Database tiers (GP, BC, Hyperscale) are eliminated regardless of other attributes.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Instance-scoped feature</th><th>SQL Database</th><th>SQL Managed Instance</th></tr></thead>
+        <tbody>
+          <tr><td>SQL Server Agent</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>CLR (Common Language Runtime)</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Linked servers</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Service Broker</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Cross-database queries</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Database Mail</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Windows Authentication</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Azure SQL Database Service Tiers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Max Storage</th><th>Failover Speed</th><th>Readable Secondary</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>General Purpose (GP)</td><td class="hl-r">4 TB</td><td class="hl-r">Slowest (remote storage)</td><td class="hl-r">✗</td><td>Standard workloads</td></tr>
+          <tr><td>Business Critical (BC)</td><td class="hl-y">~16 TB</td><td class="hl-g">~20–30s (Always On AG)</td><td class="hl-g">✓</td><td>Mission-critical, sub-second reads</td></tr>
+          <tr><td>Hyperscale</td><td class="hl-g">128 TB</td><td class="hl-g">Seconds (HA replica)</td><td class="hl-g">✓ (HA replica)</td><td>Very large DBs, fast backups</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Two-Gate Decision Model — Critical Exam Pattern</div>
+    <pre>Example: "40 TB database, fastest in-region failover"
+
+Gate 1 — Hard constraint (storage ceiling):
+  GP:  max 4 TB   ← ELIMINATED
+  BC:  max ~16 TB ← ELIMINATED
+  HS:  max 128 TB ← PASSES
+
+Gate 2 — Soft attribute (among survivors only):
+  Hyperscale with HA replica → failover in seconds ← ANSWER
+
+Trap: BC is deeply associated with "fastest failover."
+Always run Gate 1 (storage) before Gate 2 (performance).</pre>
+
+    <div class="s-h4">Scaling Patterns</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pattern</th><th>Solves</th><th>Does NOT solve</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Sharding</td><td>Exceed per-DB storage ceiling (horizontal partition)</td><td>Cost efficiency, read throughput alone</td></tr>
+          <tr><td>Elastic pools</td><td>Cost efficiency across many DBs with variable workloads</td><td class="hl-r">Per-DB storage ceiling</td></tr>
+          <tr><td>Read scale-out</td><td>Read throughput</td><td class="hl-r">Storage capacity</td></tr>
+          <tr><td>Hyperscale tier</td><td>Single-DB storage up to 128 TB</td><td>Need to partition horizontally</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-trap">
+      <strong>Trap #4:</strong> Elastic pools do NOT break the per-DB storage ceiling.
+      "Exceed maximum storage capacity of a single database" = <strong>sharding</strong>.
+    </div>
+
+    <!-- Non-relational -->
+    <div class="s-h3">Non-Relational Data</div>
+
+    <div class="s-h4">Azure Table Storage vs Cosmos DB for Table</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Azure Table Storage</th><th>Cosmos DB for Table</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SLA</strong></td><td class="hl-y">99.9%</td><td class="hl-g">99.99% (single region)</td></tr>
+          <tr><td>Schemeless</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>Consumption pricing</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>Secondary replicas</td><td class="hl-g">✓ (GRS/GZRS)</td><td class="hl-g">✓ (multi-region)</td></tr>
+          <tr><td>Global distribution</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+          <tr><td>Latency guarantee</td><td>None</td><td>&lt;10ms reads / &lt;15ms writes</td></tr>
+          <tr><td>Automatic indexing</td><td>Partial</td><td class="hl-g">✓ all properties</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      The <strong>SLA gap is the only differentiator</strong> on the exam — all MCQ options share schemeless,
+      consumption pricing, and replicas. 99.99% SLA required → <strong>Cosmos DB for Table</strong>.
+    </div>
+
+    <div class="s-h4">Azure Disk Storage Tiers</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Max IOPS</th><th>Max Throughput</th><th>Latency</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Standard HDD</td><td>~2,000</td><td>~500 MB/s</td><td>Variable ms</td><td>Dev/test, cold backup</td></tr>
+          <tr><td>Standard SSD</td><td>~6,000</td><td>~750 MB/s</td><td>Single-digit ms</td><td>Lightly loaded production</td></tr>
+          <tr><td class="hl">Premium SSD</td><td class="hl">~20,000</td><td class="hl">~900 MB/s</td><td class="hl-g">&lt;1 ms</td><td>Production, high-throughput</td></tr>
+          <tr><td class="hl">Ultra Disk</td><td class="hl">160,000</td><td class="hl">4,000 MB/s</td><td class="hl-g">Sub-ms</td><td>Mission-critical, SAP HANA</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #16:</strong> Find the lowest tier clearing ALL IOPS and throughput thresholds, then minimise cost.
+      Ultra Disk is eliminated whenever Premium SSD meets the stated requirements.
+    </div>
+
+    <div class="s-h4">Azure Files — Standard vs Premium</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Standard (GPv2)</th><th>Premium (FileStorage)</th></tr></thead>
+        <tbody>
+          <tr><td>SMB 2.1 / 3.0</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td class="hl">NFS 4.1</td><td class="hl-r">✗</td><td class="hl-g">✓ Premium only</td></tr>
+          <tr><td>LRS / ZRS</td><td class="hl-g">✓</td><td class="hl-g">✓</td></tr>
+          <tr><td>GRS / RA-GRS</td><td class="hl-g">✓</td><td class="hl-r">✗</td></tr>
+          <tr><td class="hl">GZRS / RA-GZRS</td><td class="hl-g">✓</td><td class="hl-r">✗ Not supported</td></tr>
+          <tr><td>Max share size</td><td>100 TiB</td><td>100 TiB</td></tr>
+          <tr><td>IOPS</td><td>~1,000–10,000</td><td>Up to 100,000</td></tr>
+          <tr><td>Latency</td><td>Single-digit ms</td><td>Sub-ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #3:</strong> NFS requires Premium → Standard eliminated.
+      GZRS requires Standard → Premium eliminated.
+      Premium trades geo-redundancy for performance — it does not have "more features."
+    </div>
+
+    <div class="s-h4">Storage Redundancy Options</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Option</th><th>Copies</th><th>Primary zones</th><th>Secondary region</th><th>Readable secondary</th></tr></thead>
+        <tbody>
+          <tr><td>LRS</td><td>3</td><td>1 zone, 1 DC</td><td class="hl-r">✗</td><td class="hl-r">✗</td></tr>
+          <tr><td>ZRS</td><td>3</td><td class="hl-g">3 zones</td><td class="hl-r">✗</td><td class="hl-r">✗</td></tr>
+          <tr><td>GRS</td><td>6</td><td>1 DC</td><td class="hl-y">✓ (after failover)</td><td class="hl-r">✗</td></tr>
+          <tr><td>GZRS</td><td>6</td><td class="hl-g">3 zones</td><td class="hl-y">✓ (after failover)</td><td class="hl-r">✗</td></tr>
+          <tr><td>RA-GRS</td><td>6</td><td>1 DC</td><td class="hl-g">✓ always</td><td class="hl-g">✓</td></tr>
+          <tr><td>RA-GZRS</td><td>6</td><td class="hl-g">3 zones</td><td class="hl-g">✓ always</td><td class="hl-g">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #24:</strong> Regional compliance (data must stay in one region) →
+      eliminate GRS, GZRS, RA-GRS, RA-GZRS immediately.
+      Remaining: LRS or ZRS. Choose <strong>ZRS</strong> for datacenter fault tolerance within region.
+    </div>
+
+    <div class="s-h4">Customer-Managed Keys (CMK)</div>
+    <p class="body-text">
+      CMK requires: <strong>Azure Key Vault</strong> (or Managed HSM) to store the key +
+      <strong>Managed Identity</strong> on the storage account to retrieve it at runtime.
+      Managed HSM = FIPS 140-2 <strong>Level 3</strong> (vs Level 2 for Key Vault) — used for regulated industries.
+    </p>
+    <div class="callout callout-tip">
+      Distractors and why they're wrong: Private Link → network access control, not encryption.
+      Service Endpoints → network security, not key management. SAS tokens → access delegation, not encryption.
+    </div>
+
+    <div class="s-h4">Azure Data Lake Storage Gen2 (ADLS Gen2)</div>
+    <pre>ADLS Gen2 = Azure Blob Storage + Hierarchical Namespace (HNS)
+
+Three exam signals for ADLS Gen2:
+  1. JSON/CSV object storage (blob foundation)
+  2. Hierarchical namespace → atomic directory rename/delete (not O(n))
+  3. HDFS compatibility via ABFS driver (for Databricks/Spark)
+
+Medallion architecture:
+  Ingestion → ADLS Gen2 Bronze/raw  (cheapest, schema-on-read)
+            → Databricks/Synapse Silver/curated
+            → SQL/Synapse/Power BI Gold/serving layer
+
+⚠  HNS is configured at account creation — CANNOT be disabled afterward.</pre>
+
+    <!-- Key Numbers D2 -->
+    <div class="s-h3">Key Numbers — Domain 2</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">4 TB</span><span class="kn-lbl">SQL DB General Purpose max storage</span></div>
+      <div class="kn-item"><span class="kn-val">~16 TB</span><span class="kn-lbl">SQL DB Business Critical max storage</span></div>
+      <div class="kn-item"><span class="kn-val">128 TB</span><span class="kn-lbl">SQL DB Hyperscale max storage</span></div>
+      <div class="kn-item"><span class="kn-val">16 TB</span><span class="kn-lbl">SQL Managed Instance max storage</span></div>
+      <div class="kn-item"><span class="kn-val">~20–30s</span><span class="kn-lbl">Business Critical in-region failover (Always On AG)</span></div>
+      <div class="kn-item"><span class="kn-val">99.9%</span><span class="kn-lbl">Azure Table Storage SLA</span></div>
+      <div class="kn-item"><span class="kn-val">99.99%</span><span class="kn-lbl">Cosmos DB for Table SLA (single region)</span></div>
+      <div class="kn-item"><span class="kn-val">~20,000</span><span class="kn-lbl">Premium SSD max IOPS per disk</span></div>
+      <div class="kn-item"><span class="kn-val">160,000</span><span class="kn-lbl">Ultra Disk max IOPS per disk</span></div>
+      <div class="kn-item"><span class="kn-val">Premium</span><span class="kn-lbl">Only tier supporting NFS on Azure Files</span></div>
+      <div class="kn-item"><span class="kn-val">Standard</span><span class="kn-lbl">Only tier supporting GZRS on Azure Files</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-305 DOMAIN 3
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az305-d3">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Domain 3</div>
+        <h2>Business Continuity Solutions</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">15–20%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <div class="s-h3">HA Scope Decision Tree</div>
+    <pre>What failure must the solution survive?
+│
+├── Hardware component failure (rack, server, NIC)
+│   Datacenter failure is acceptable
+│   → Availability Set  (SLA 99.95%)
+│     · Fault domains: up to 3 (separate racks + independent power)
+│     · Update domains: 5–20 (rolling platform patching)
+│
+├── Datacenter failure / power outage affecting a physical location
+│   Regional failure is acceptable
+│   → Availability Zone  (SLA 99.99%)
+│     · 3 physically separate datacenters within the region
+│     · Independent power, cooling, and networking per zone
+│     · Cross-zone latency: &lt;2 ms
+│
+└── Regional failure (entire Azure region)
+    → Multi-region architecture
+      IaaS: Azure Site Recovery (RPO ~30s, RTO minutes)
+      PaaS: SQL geo-replication / auto-failover groups
+            Cosmos DB multi-region writes
+            Azure Storage RA-GRS / RA-GZRS</pre>
+
+    <div class="callout callout-tip">
+      <strong>Keyword mapping:</strong>
+      "power outage / physical location / datacenter failure" = <strong>Availability Zone</strong> ·
+      "hardware component / rack failure / datacenter failure acceptable" = <strong>Availability Set</strong> ·
+      "regional failure / failover to secondary region" = <strong>Azure Site Recovery</strong>
+    </div>
+
+    <div class="s-h3">Availability Sets vs Availability Zones</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Availability Set</th><th>Availability Zone</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SLA</strong></td><td class="hl-y">99.95%</td><td class="hl-g">99.99%</td></tr>
+          <tr><td>Scope</td><td>Single datacenter</td><td>Separate physical datacenters</td></tr>
+          <tr><td>Failure protection</td><td>Hardware / rack failure</td><td>Datacenter (power, cooling, network)</td></tr>
+          <tr><td>Fault domains</td><td>Up to 3 (separate racks/power)</td><td>Physical AZ boundary</td></tr>
+          <tr><td>Update domains</td><td>5–20 (rolling patching groups)</td><td>N/A</td></tr>
+          <tr><td>Min zones required</td><td>N/A</td><td class="hl">3 zones per supported region</td></tr>
+          <tr><td>Cross-zone latency</td><td>N/A</td><td>&lt;2 ms within same region</td></tr>
+          <tr><td>Compatible with Ultra Disk</td><td class="hl-r">✗</td><td class="hl-g">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #25:</strong> Availability Set = <strong>99.95%</strong>. Availability Zone = <strong>99.99%</strong>.
+      "Four nines" always means Availability Zones. These are fundamentally different constructs.
+    </div>
+
+    <div class="s-h3">RTO and RPO</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th><th>Drives</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">RTO</td><td>Recovery Time Objective — max acceptable downtime</td><td>Failover speed and architecture tier</td></tr>
+          <tr><td class="hl">RPO</td><td>Recovery Point Objective — max acceptable data loss</td><td>Replication frequency and synchronisation mode</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Architecture Tiers by RTO / RPO</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Architecture</th><th>RTO</th><th>RPO</th><th>Cost tier</th></tr></thead>
+        <tbody>
+          <tr><td>Single VM (no HA)</td><td class="hl-r">Hours (manual)</td><td>Last backup</td><td>Lowest</td></tr>
+          <tr><td>Availability Set</td><td>Near-zero (LB absorbs)</td><td>0 (stateless)</td><td>Low</td></tr>
+          <tr><td>Availability Zones</td><td>~seconds</td><td>0 (synchronous)</td><td>Medium</td></tr>
+          <tr><td>ASR active-passive</td><td class="hl-y">Minutes</td><td class="hl-y">~30 seconds</td><td>Medium</td></tr>
+          <tr><td>Active-active multi-region</td><td class="hl-g">~seconds</td><td class="hl-g">0</td><td>Highest</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Exam trap:</strong> When a scenario states both "RTO &lt; 15 min" AND "minimise costs," the answer is the
+      <em>cheapest architecture that still satisfies the RTO minimum</em> — not the highest-resilience option.
+    </div>
+
+    <div class="s-h3">Azure Site Recovery (ASR)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Supported sources</td><td>Azure VMs, VMware, Hyper-V, physical servers</td></tr>
+          <tr><td>Replication</td><td>Continuous block-level (Azure-to-Azure)</td></tr>
+          <tr><td class="hl">RPO (Azure VMs)</td><td class="hl-g">~30 seconds</td></tr>
+          <tr><td>RTO</td><td>Minutes (VM boot time + DNS propagation)</td></tr>
+          <tr><td>Test failover</td><td>Isolated VNet — zero production impact</td></tr>
+          <tr><td>Planned failover</td><td>Controlled, zero data loss (fully replicated before switching)</td></tr>
+          <tr><td>Unplanned failover</td><td>Emergency; small data loss possible</td></tr>
+          <tr><td>Recovery Plans</td><td>Orchestrate sequenced multi-tier failover with Automation Runbook hooks</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Azure Backup</div>
+    <div class="s-h4">Vault Types</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vault Type</th><th>Supported Workloads</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">Recovery Services Vault</td>
+            <td>Azure VMs · SQL in VMs · Azure Files · SAP HANA in VM · MABS / DPM</td>
+          </tr>
+          <tr>
+            <td class="hl">Backup Vault</td>
+            <td>Azure Managed Disks · Azure Blobs · Azure Database for PostgreSQL</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      <strong>Soft delete:</strong> Deleted backup data is retained for <strong>14 days</strong> before permanent deletion.
+      Enabled by default on all new Recovery Services Vaults. Protects against ransomware and accidental deletion.
+      Multi-User Authorization (Resource Guard) requires a second approver from a different tenant for critical operations.
+    </div>
+
+    <div class="s-h3">PaaS High Availability</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>HA option</th><th>RPO</th><th>RTO</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>SQL DB — BC</td>
+            <td>In-region Always On AG</td>
+            <td class="hl-g">0</td>
+            <td class="hl-g">~20–30s</td>
+            <td>Synchronous commit; built-in readable secondary</td>
+          </tr>
+          <tr>
+            <td>SQL DB</td>
+            <td>Active geo-replication</td>
+            <td class="hl-y">~5s</td>
+            <td>~30s</td>
+            <td>Up to 4 readable secondaries, any region</td>
+          </tr>
+          <tr>
+            <td>SQL DB</td>
+            <td>Auto-failover groups</td>
+            <td class="hl-y">~5s</td>
+            <td>~30s</td>
+            <td>DNS-based endpoint — no connection string changes on failover</td>
+          </tr>
+          <tr>
+            <td>Cosmos DB</td>
+            <td>Multi-region writes</td>
+            <td class="hl-g">~0</td>
+            <td>~15 min SLA</td>
+            <td>Any configured region accepts writes simultaneously</td>
+          </tr>
+          <tr>
+            <td>Azure Storage</td>
+            <td>RA-GRS / RA-GZRS</td>
+            <td>Replication lag</td>
+            <td>Microsoft-initiated failover</td>
+            <td>Read-only secondary accessible at all times</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h3">Key Numbers — Domain 3</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">99.95%</span><span class="kn-lbl">Availability Set SLA</span></div>
+      <div class="kn-item"><span class="kn-val">99.99%</span><span class="kn-lbl">Availability Zone SLA</span></div>
+      <div class="kn-item"><span class="kn-val">99.9%</span><span class="kn-lbl">Single VM (Premium SSD) SLA</span></div>
+      <div class="kn-item"><span class="kn-val">~30s</span><span class="kn-lbl">ASR RPO for Azure VM replication</span></div>
+      <div class="kn-item"><span class="kn-val">Up to 3</span><span class="kn-lbl">Fault domains per Availability Set</span></div>
+      <div class="kn-item"><span class="kn-val">5–20</span><span class="kn-lbl">Update domains per Availability Set</span></div>
+      <div class="kn-item"><span class="kn-val">3</span><span class="kn-lbl">Minimum AZs per supported region</span></div>
+      <div class="kn-item"><span class="kn-val">14 days</span><span class="kn-lbl">Soft delete retention (VM backup)</span></div>
+      <div class="kn-item"><span class="kn-val">~5s</span><span class="kn-lbl">SQL active geo-replication RPO</span></div>
+      <div class="kn-item"><span class="kn-val">0</span><span class="kn-lbl">SQL BC in-region RPO (synchronous Always On AG)</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AZ-305 DOMAIN 4
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="az305-d4">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Domain 4 · Highest Weight</div>
+        <h2>Infrastructure Solutions</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">30–35%</span>
+        <span class="pct-label">Exam weight</span>
+      </div>
+    </div>
+
+    <!-- Compute -->
+    <div class="s-h3">Compute — Service Selection Framework</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Trigger keywords</th><th>Key constraint</th><th>Admin overhead</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Azure Batch</td><td>Large-scale parallel, HPC, rendering, simulation, video encoding</td><td class="hl-g">No execution time limit</td><td>Minimal (fully managed)</td></tr>
+          <tr><td class="hl">Functions (Consumption)</td><td>Infrequent, event-driven, HTTP trigger, minimise cost</td><td class="hl-r">60 min max timeout</td><td>Minimal</td></tr>
+          <tr><td class="hl">ACI</td><td>Container, fast start, short-lived, no orchestration needed</td><td>Stateless preferred</td><td>Low</td></tr>
+          <tr><td class="hl">App Service</td><td>Web app, REST API, managed PaaS</td><td>No HPC, no container orchestration</td><td>Low</td></tr>
+          <tr><td class="hl">AKS</td><td>Container orchestration at scale, microservices</td><td>Complex setup, cluster management</td><td>High</td></tr>
+          <tr><td class="hl">Virtual Machines</td><td>Full OS control, lift-and-shift, custom software</td><td class="hl-r">VNet assignment is permanent</td><td>Maximum</td></tr>
+          <tr><td class="hl">Azure Databricks</td><td>Managed Apache Spark, big data ETL, ML</td><td>Cluster startup time</td><td>Medium</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">Azure Functions — Plan Comparison</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Plan</th><th>Billing</th><th>Cold start</th><th>VNet integration</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Consumption</td><td>Per execution (per 1M + GB-seconds)</td><td class="hl-r">Yes</td><td class="hl-r">✗</td><td>Infrequent, bursty, cost-critical</td></tr>
+          <tr><td class="hl">Premium</td><td>Monthly (reserved instance)</td><td class="hl-g">No (always warm)</td><td class="hl-g">✓</td><td>Consistent traffic + VNet required</td></tr>
+          <tr><td class="hl">Dedicated (App Service)</td><td>Monthly (shared ASP cost)</td><td class="hl-g">No</td><td class="hl-g">✓</td><td>Predictable load; co-located with existing App Service plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s-h4">ACI Volume Mounts — Multi-Container Sharing</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Volume type</th><th>Multi-container mount</th><th>Persistent</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Azure Files</td><td class="hl-g">✓ Simultaneous (ReadWriteMany)</td><td class="hl-g">✓</td><td>Shared persistent state across containers in group</td></tr>
+          <tr><td>Azure Disk</td><td class="hl-r">✗ ReadWriteOnce</td><td class="hl-g">✓</td><td>Single-container persistent storage</td></tr>
+          <tr><td>gitRepo</td><td class="hl-r">✗</td><td>Read-only snapshot</td><td>Code or config injection at startup</td></tr>
+          <tr><td>emptyDir</td><td class="hl-r">✗</td><td class="hl-r">✗ Ephemeral</td><td>Temp scratch space; lost on restart</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #9:</strong> "Two containers needing simultaneous access" = <strong>Azure Files</strong>.
+      Azure Disk is ReadWriteOnce — only one container can mount it at a time.
+    </div>
+
+    <div class="callout callout-tip">
+      <strong>VNet-First Design Principle:</strong> A VM's VNet assignment is <strong>permanent</strong> after deployment —
+      changing it requires full redeployment. Always design network topology first.
+      Design order: VNet → Availability (zones/sets) → VM size → Storage → Naming.
+    </div>
+
+    <!-- Networking -->
+    <div class="s-h3">Networking — Load Balancing Full Matrix</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Layer</th><th>Scope</th><th>Protocol</th><th>WAF</th><th>Single Hostname</th><th>Use When</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hl">Azure Load Balancer</td>
+            <td>L4 TCP/UDP</td><td>Regional</td><td>Any</td>
+            <td class="hl-r">✗</td><td class="hl-r">✗</td>
+            <td>Internal/external TCP/UDP, no HTTP inspection needed</td>
+          </tr>
+          <tr>
+            <td class="hl">Application Gateway</td>
+            <td>L7 HTTP/S</td><td>Regional</td><td>HTTP/S</td>
+            <td class="hl-g">✓</td><td class="hl-r">✗ (regional only)</td>
+            <td>Single-region web app, URL routing, WAF, session affinity</td>
+          </tr>
+          <tr>
+            <td class="hl">Azure Front Door</td>
+            <td>L7 HTTP/S</td><td class="hl-g">Global</td><td>HTTP/S</td>
+            <td class="hl-g">✓</td><td class="hl-g">✓ Anycast</td>
+            <td>Global HTTP, single hostname, CDN, WAF, session affinity</td>
+          </tr>
+          <tr>
+            <td class="hl">Traffic Manager</td>
+            <td>DNS</td><td class="hl-g">Global</td><td class="hl-g">Any</td>
+            <td class="hl-r">✗</td><td class="hl-r">✗ DNS redirect</td>
+            <td>Global any-protocol; DNS-based routing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #2:</strong> Traffic Manager supports global latency routing — matching 2 of 3 stated requirements.
+      The tiebreaker is always "single hostname" → <strong>Front Door wins</strong>.
+      Traffic Manager redirects the client to a regional endpoint; the hostname seen by the client changes.
+    </div>
+
+    <div class="s-h4">On-Premises Connectivity</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>Encrypted by default</th><th>Latency</th><th>Max bandwidth</th></tr></thead>
+        <tbody>
+          <tr><td>P2S VPN</td><td>Public internet</td><td class="hl-g">✓ (IKEv2/SSTP)</td><td>Variable</td><td>~10 Gbps</td></tr>
+          <tr><td>S2S VPN</td><td>Public internet</td><td class="hl-g">✓ (IPSec)</td><td>Variable</td><td>~10 Gbps</td></tr>
+          <tr><td class="hl">ExpressRoute</td><td class="hl-g">Private circuit</td><td class="hl-r">✗ No</td><td class="hl-g">Lowest, consistent</td><td class="hl-g">100 Gbps</td></tr>
+          <tr><td>ER + IPSec</td><td>Private circuit</td><td class="hl-g">✓</td><td class="hl-g">Lowest</td><td>100 Gbps</td></tr>
+          <tr><td>Virtual WAN Std</td><td>MS backbone</td><td class="hl-g">✓ (per tunnel)</td><td>Low</td><td>100 Gbps</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #7:</strong> ExpressRoute does <em>NOT</em> encrypt traffic by default.
+      Private circuit ≠ encrypted. For encryption + low latency: add IPSec over ExpressRoute.
+      "Minimise latency" = ExpressRoute. "Encrypted tunnel" = VPN Gateway.
+    </div>
+
+    <div class="s-h4">NAT Gateway</div>
+    <p class="body-text">
+      Managed outbound SNAT for subnets. Provides a stable pool of public IPs for outbound connections.
+      <strong>Outbound-only</strong> — no inbound path by design. Up to <strong>16 public IPs</strong> per gateway
+      (~64,512 SNAT ports per IP → ~1M concurrent outbound). Attached at subnet level. Auto-scales.
+    </p>
+
+    <div class="s-h4">Azure Bastion</div>
+    <p class="body-text">
+      Browser-based RDP/SSH over HTTPS (port 443) via the Azure portal. VM needs <strong>no public IP</strong>
+      and <strong>no port 3389 or 22</strong> exposed in NSGs. Deployed in a dedicated
+      <code>AzureBastionSubnet</code> (<strong>/27 minimum — must be named exactly</strong>).
+      SKUs: Basic (browser only) vs Standard (native client, file transfer, shareable links).
+    </p>
+
+    <div class="s-h4">User Defined Routes (UDR)</div>
+    <p class="body-text">
+      Override Azure's default system routing to force traffic through a specific next hop.
+      Required for NVA inspection — without UDRs, Azure routes inter-subnet traffic directly,
+      bypassing any inline firewall. Set the NVA's private IP as next-hop type "Virtual appliance."
+      Also enable <strong>IP forwarding</strong> on the NVA NIC.
+    </p>
+    <div class="callout callout-trap">
+      <strong>Trap #14:</strong> NSGs filter traffic but cannot change the routing path.
+      "Force traffic through NVA" = <strong>UDR</strong>. "Filter traffic" = NSG.
+    </div>
+
+    <div class="s-h4">Azure Virtual WAN</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Capabilities</th></tr></thead>
+        <tbody>
+          <tr><td>Basic</td><td>S2S VPN only</td></tr>
+          <tr><td class="hl">Standard</td><td>S2S VPN + P2S VPN + ExpressRoute + inter-hub routing + Azure Firewall Manager + NVA support</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip">
+      Three requirements → Virtual WAN Standard:
+      <strong>automated branch connectivity</strong> + <strong>centralised security (Firewall Manager)</strong> + <strong>Microsoft global backbone</strong>
+    </div>
+
+    <!-- App Architecture -->
+    <div class="s-h3">Application Architecture</div>
+
+    <div class="s-h4">Messaging Services</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pattern</th><th>Service</th><th>Consumer model</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td>Simple queue</td><td class="hl">Azure Queue Storage</td><td>One consumer at a time</td><td>Cheap, basic task distribution</td></tr>
+          <tr><td>Reliable queue</td><td class="hl">Service Bus Queue</td><td>Competing consumers</td><td>Reliable ordered processing, dead-letter, sessions</td></tr>
+          <tr><td class="hl-g">Pub/sub</td><td class="hl">Service Bus Topics</td><td class="hl-g">Each subscriber = own independent copy</td><td>Multiple independent consumers</td></tr>
+          <tr><td>Streaming</td><td class="hl">Event Hubs</td><td>Consumer groups (retain/replay)</td><td>High-volume telemetry, IoT, logs</td></tr>
+          <tr><td>Event-driven</td><td class="hl">Event Grid</td><td>Push to handlers (Functions, Logic Apps)</td><td>Reactive microservices, serverless triggers</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #8:</strong> Service Bus Queue delivers each message to <em>one</em> consumer only.
+      "Multiple destinations each receiving their own copy" → <strong>Service Bus Topics with subscriptions</strong>.
+    </div>
+
+    <div class="s-h4">Azure Cache for Redis</div>
+    <p class="body-text">
+      In-memory key-value store. <strong>Cache-aside pattern:</strong> App checks Redis first.
+      Cache hit → return from memory instantly. Cache miss → query SQL DB → write to Redis with TTL → return.
+      Dramatically reduces DB load for read-heavy dynamic queries.
+    </p>
+    <div class="callout callout-trap">
+      <strong>Trap #11:</strong> CDN caches <em>static content</em> (images, CSS, JS) only.
+      Dynamic SQL data retrieval performance → <strong>Redis</strong>. CDN ≠ Redis.
+    </div>
+
+    <div class="s-h4">Azure API Management (APIM)</div>
+    <p class="body-text">
+      APIM exposes and manages <strong>API endpoints</strong> — not servers, not applications.
+      Object hierarchy: API → Operation → Product (bundle) → Subscription (access key).
+    </p>
+    <div class="callout callout-trap">
+      <strong>Trap #10:</strong> "30 APIs on 5 servers + 40 APIs on 10 servers" = <strong>70 APIs</strong> total.
+      APIM registers endpoints. Server count is completely irrelevant.
+    </div>
+
+    <!-- Data Integration -->
+    <div class="s-h3">Data Integration</div>
+
+    <div class="s-h4">Azure Data Factory — Component Hierarchy</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Role</th><th>Analogy</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Linked Service</td><td>Connection definition to a source or sink</td><td>Connection string</td></tr>
+          <tr><td class="hl">Dataset</td><td>Data structure / location pointer</td><td>Table or file reference</td></tr>
+          <tr><td class="hl">Activity</td><td>Single action (Copy, Mapping DF, Stored Proc, Notebook)</td><td>One task step</td></tr>
+          <tr><td class="hl">Pipeline</td><td>Groups and sequences activities with dependencies</td><td>Workflow / orchestration</td></tr>
+          <tr><td class="hl">Integration Runtime</td><td>Compute engine that executes activities (Auto, SHIR, Azure IR)</td><td>Execution engine</td></tr>
+          <tr><td class="hl">Trigger</td><td>Starts a pipeline (Schedule / Event / Tumbling Window)</td><td>Cron job</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #20:</strong> "Combine multiple activities" = <strong>Pipeline</strong> — not Dataset.
+      Dataset is a data pointer/reference. Pipeline is the orchestration container.
+      Self-Hosted Integration Runtime (SHIR) is required for on-premises sources not reachable from public internet.
+    </div>
+
+    <div class="s-h4">Event Hubs Capture</div>
+    <p class="body-text">
+      Native feature that writes ingested events to persistent storage in <strong>Apache Avro format</strong>.
+      Capture targets: <strong>Azure Blob Storage</strong> or <strong>ADLS Gen2 only</strong> — no other targets.
+      Triggered by time window (e.g., every 5 min) or size window (e.g., every 300 MB).
+    </p>
+
+    <div class="s-h4">Azure Analytics Services</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Engine</th><th>Latency mode</th><th>Primary use case</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Azure Databricks</td><td class="hl-g">Apache Spark</td><td>Batch + near-real-time</td><td>Big data ETL, ML, Spark streaming</td></tr>
+          <tr><td class="hl">Stream Analytics</td><td>SQL DSL</td><td class="hl-g">Real-time (&lt;1s)</td><td>IoT, telemetry, continuous SQL queries</td></tr>
+          <tr><td class="hl">Azure Synapse</td><td>SQL + Spark + Pipelines</td><td>Batch</td><td>Unified analytics platform (DW + Spark + ADF)</td></tr>
+          <tr><td class="hl">Azure Data Explorer</td><td>KQL / Kusto</td><td>Near-real-time</td><td>Log analytics, time-series, exploration</td></tr>
+          <tr><td class="hl">Analysis Services</td><td>SSAS tabular / OLAP</td><td>Batch (refresh cycle)</td><td>BI semantic model layer for Power BI</td></tr>
+          <tr><td class="hl">Azure HDInsight</td><td>Hadoop / Spark / Kafka</td><td>Batch</td><td>Custom open-source cluster workloads</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-trap">
+      <strong>Trap #19:</strong> Stream Analytics uses a SQL-based DSL — not Apache Spark.
+      "Managed Apache Spark" = <strong>Azure Databricks</strong> exclusively.
+      HDInsight can run Spark but is not a managed Databricks-equivalent.
+    </div>
+
+    <!-- Key Numbers D4 -->
+    <div class="s-h3">Key Numbers — Domain 4</div>
+    <div class="kn-grid">
+      <div class="kn-item"><span class="kn-val">10 min</span><span class="kn-lbl">Functions Consumption default timeout</span></div>
+      <div class="kn-item"><span class="kn-val">60 min</span><span class="kn-lbl">Functions Consumption max timeout</span></div>
+      <div class="kn-item"><span class="kn-val">16</span><span class="kn-lbl">NAT Gateway max public IPs (~1M concurrent)</span></div>
+      <div class="kn-item"><span class="kn-val">/27</span><span class="kn-lbl">AzureBastionSubnet minimum size</span></div>
+      <div class="kn-item"><span class="kn-val">100 Gbps</span><span class="kn-lbl">ExpressRoute max bandwidth</span></div>
+      <div class="kn-item"><span class="kn-val">None</span><span class="kn-lbl">ExpressRoute default encryption</span></div>
+      <div class="kn-item"><span class="kn-val">Non-transitive</span><span class="kn-lbl">VNet peering — no A→B→C without explicit A→C peering</span></div>
+      <div class="kn-item"><span class="kn-val">80 GB</span><span class="kn-lbl">Service Bus Premium max storage per entity</span></div>
+      <div class="kn-item"><span class="kn-val">100 MB</span><span class="kn-lbl">Service Bus Premium max message size</span></div>
+      <div class="kn-item"><span class="kn-val">Avro</span><span class="kn-lbl">Event Hubs Capture output format</span></div>
+      <div class="kn-item"><span class="kn-val">Blob / ADLS</span><span class="kn-lbl">Event Hubs Capture targets only</span></div>
+      <div class="kn-item"><span class="kn-val">S2S VPN</span><span class="kn-lbl">Virtual WAN Basic — only capability</span></div>
+    </div>
+  </section>
+  <section class="section" id="frameworks">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Reference</div>
+        <h2>Decision Frameworks</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">10</span>
+        <span class="pct-label">Elimination trees</span>
+      </div>
+    </div>
+
+    <p class="s-intro">Apply hard constraints first — eliminate before optimising. Each framework is an ordered gate sequence. Stop at the first gate the scenario fails.</p>
+
+    <h3 class="s-h3">Framework 1 — Azure SQL Service Selection</h3>
+    <pre class="decision-tree">Does the workload need INSTANCE-SCOPED features?
+(SQL Server Agent / CLR / Linked Servers / Service Broker / cross-DB queries)
+│
+├── YES → Azure SQL Managed Instance (GP or BC tier)
+│          ↓
+│          Highest HA / fastest failover needed?
+│          ├── YES → SQL MI Business Critical
+│          └── NO  → SQL MI General Purpose
+│
+└── NO  → Azure SQL Database
+           ↓
+           GATE 1: How large is the database?
+           ├── ≤ 4 TB → General Purpose or Business Critical eligible
+           ├── 4–16 TB → Business Critical eligible
+           └── &gt; 16 TB → ONLY Hyperscale (128 TB max)
+                          ↓
+           GATE 2: What performance/HA attribute is needed? (among survivors)
+           ├── Fastest failover → Business Critical (~20–30s)
+           ├── Readable secondary + scale-out reads → Business Critical or Hyperscale
+           ├── Very large DB + fast backup/restore → Hyperscale
+           └── Standard workload, cost-conscious → General Purpose</pre>
+    <div class="callout callout-trap"><strong>Critical trap:</strong> BC = "fastest failover" is the exam's most common distractor. Storage gate runs first. 40 TB eliminates GP and BC before failover speed even matters.</div>
+
+    <h3 class="s-h3">Framework 2 — Global Load Balancing</h3>
+    <pre class="decision-tree">What protocol does the workload use?
+│
+├── HTTP / HTTPS only
+│   ↓
+│   Does the scenario require a SINGLE HOSTNAME globally?
+│   ├── YES → Azure Front Door
+│   │         (anycast reverse proxy, one hostname, WAF, SSL offload, CDN)
+│   └── NO  → Azure Front Door (still recommended for L7 global)
+│             OR Traffic Manager with URL-based policy
+│
+└── ANY protocol (TCP, UDP, non-HTTP)
+    → Azure Traffic Manager
+      (DNS-based routing, no proxy, latency/failover/priority/weighted modes)</pre>
+    <div class="callout callout-trap"><strong>Critical trap:</strong> Traffic Manager supports latency routing globally — it matches 2 of 3 requirements in a "single hostname + HTTP + global latency" question. The tiebreaker is always "single hostname" — Front Door wins.</div>
+
+    <h3 class="s-h3">Framework 3 — Regional vs Global Load Balancing</h3>
+    <pre class="decision-tree">Single region or multi-region?
+│
+├── SINGLE REGION
+│   ↓
+│   HTTP/HTTPS?
+│   ├── YES → Application Gateway (L7, URL routing, WAF, session affinity)
+│   └── NO  → Azure Load Balancer (L4, TCP/UDP, internal or public)
+│
+└── MULTI-REGION
+    ↓
+    HTTP/HTTPS + single hostname?
+    ├── YES → Azure Front Door
+    └── NO  → Azure Traffic Manager (any protocol, DNS-based)</pre>
+
+    <h3 class="s-h3">Framework 4 — Storage Redundancy</h3>
+    <pre class="decision-tree">Is there a regional data-residency compliance requirement?
+(data must stay within one Azure region)
+│
+├── YES → Eliminate GRS, GZRS, RA-GRS, RA-GZRS (all replicate to secondary region)
+│         Remaining options: LRS or ZRS
+│         ↓
+│         Need to survive datacenter/zone failure?
+│         ├── YES → ZRS (3 zones in region, survives datacenter failure)
+│         └── NO  → LRS (cheapest, single datacenter)
+│
+└── NO  → All options eligible
+          ↓
+          Need read access to secondary at all times (not just after failover)?
+          ├── YES → RA-GRS or RA-GZRS
+          └── NO
+              ↓
+              Need zone-level fault tolerance in primary AND geo-redundancy?
+              ├── YES → GZRS (or RA-GZRS for read access)
+              └── NO  → GRS (cheaper, one datacenter in primary region)</pre>
+
+    <h3 class="s-h3">Framework 5 — Azure Disk Tier Selection</h3>
+    <pre class="decision-tree">Start with stated IOPS requirement:
+│
+├── ≤ ~2,000 IOPS → Standard HDD sufficient (dev/test only)
+├── ≤ ~6,000 IOPS → Standard SSD sufficient
+├── ≤ ~20,000 IOPS → Premium SSD sufficient ← most common exam answer
+└── &gt; 20,000 IOPS (up to 160,000) → Ultra Disk required
+
+THEN apply throughput check on the surviving tier.
+THEN apply cost constraint: lowest tier clearing ALL gates = answer.</pre>
+    <div class="callout callout-trap"><strong>Trap:</strong> Ultra Disk is never the answer when Premium SSD meets the stated thresholds — cost minimisation overrides a desire for headroom.</div>
+
+    <h3 class="s-h3">Framework 6 — Azure Files: Standard vs Premium</h3>
+    <pre class="decision-tree">Does the workload require NFS protocol?
+├── YES → Premium (FileStorage account) — NFS is Premium-only
+└── NO (SMB or REST only)
+    ↓
+    Does the compliance/DR requirement need geo-redundancy (GZRS)?
+    ├── YES → Standard (GPv2) — GZRS only available on Standard
+    └── NO  → Either tier eligible; Premium for IOPS-sensitive, Standard for cost</pre>
+
+    <h3 class="s-h3">Framework 7 — On-Premises Connectivity</h3>
+    <pre class="decision-tree">Primary requirement?
+│
+├── MINIMISE LATENCY / guaranteed bandwidth
+│   → ExpressRoute (private circuit, off public internet, up to 100 Gbps)
+│   ⚠ NOT encrypted by default — add IPSec over ER if needed
+│
+├── ENCRYPTED tunnel over public internet (acceptable latency)
+│   ├── Site-to-site → VPN Gateway S2S
+│   └── Remote users → VPN Gateway P2S
+│
+├── Branch offices: automated connectivity + central security + backbone
+│   → Virtual WAN Standard
+│
+└── Secure browser-based RDP/SSH without public IP
+    → Azure Bastion</pre>
+
+    <h3 class="s-h3">Framework 8 — Messaging Service Selection</h3>
+    <pre class="decision-tree">What is the consumption pattern?
+│
+├── Single consumer processes each message
+│   ├── Need reliability, ordering, dead-letter, sessions → Service Bus Queue
+│   └── Cost over features → Azure Storage Queue
+│
+├── MULTIPLE consumers each need their OWN COPY → Service Bus Topics + Subscriptions
+│
+├── High-volume event STREAMING (telemetry, logs, clickstream)
+│   → Event Hubs (consumer groups, replay, Capture → Blob/ADLS)
+│
+└── Reactive event routing (trigger Functions, Logic Apps on resource events)
+    → Event Grid (push, at-least-once, low latency)</pre>
+
+    <h3 class="s-h3">Framework 9 — Compute Service Selection</h3>
+    <pre class="decision-tree">Is it HPC / large-scale parallel workload (rendering, simulation, batch jobs)?
+├── YES → Azure Batch (no time limit, managed nodes, auto-scale)
+└── NO
+    ↓
+    Is execution time ≤ 10 min (default) or ≤ 60 min (max) and infrequent?
+    ├── YES + HTTP trigger + minimise cost → Azure Functions (Consumption plan)
+    └── NO
+        ↓
+        Is it containerised without orchestration?
+        ├── YES + shared storage across containers → ACI + Azure Files volume
+        ├── YES + short-lived, isolated → ACI
+        └── NO
+            ↓
+            Is it microservices / container orchestration at scale?
+            ├── YES → AKS
+            └── NO
+                ↓
+                Web app or REST API (no containers)?
+                ├── YES → App Service
+                └── Full OS control / lift-and-shift → Virtual Machine</pre>
+
+    <h3 class="s-h3">Framework 10 — Availability / Business Continuity Scope</h3>
+    <pre class="decision-tree">What failure must the solution survive?
+│
+├── Hardware component / rack / server failure
+│   (datacenter failure acceptable)
+│   → Availability Set  [SLA 99.95%]
+│     Fault domains: up to 3 (separate racks/power)
+│     Update domains: 5–20 (rolling patching)
+│
+├── Datacenter / power outage affecting a physical location
+│   (regional failure acceptable)
+│   → Availability Zone  [SLA 99.99%]
+│     3 physically separate datacenters within region
+│     Cross-zone latency: &lt;2ms
+│
+└── Regional failure (entire Azure region down)
+    → Multi-region architecture
+      ├── IaaS: Azure Site Recovery (RPO ~30s, RTO minutes)
+      └── PaaS: SQL geo-replication / auto-failover groups
+               Cosmos DB multi-region writes
+               Azure Storage RA-GRS/RA-GZRS</pre>
+
+    <h3 class="s-h3">Key Numbers Reference Card</h3>
+    <p class="s-body">Memorise these. They appear as distractors or in calculation questions on the exam.</p>
+
+    <h4 class="s-h4">Azure SQL Tiers</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Max Storage</th><th>Failover Speed</th><th>Readable Secondary</th></tr></thead>
+        <tbody>
+          <tr><td>SQL DB — General Purpose</td><td class="hl">4 TB</td><td>Slowest</td><td>❌</td></tr>
+          <tr><td>SQL DB — Business Critical</td><td class="hl">~16 TB</td><td class="hl-g">~20–30 seconds</td><td>✅</td></tr>
+          <tr><td>SQL DB — Hyperscale</td><td class="hl">128 TB</td><td class="hl-g">Seconds</td><td>✅</td></tr>
+          <tr><td>SQL MI — General Purpose</td><td class="hl">16 TB</td><td>Standard</td><td>❌</td></tr>
+          <tr><td>SQL MI — Business Critical</td><td class="hl">16 TB</td><td class="hl-g">~20–30 seconds</td><td>✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Availability SLAs</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resource</th><th>SLA</th></tr></thead>
+        <tbody>
+          <tr><td>Single VM (Premium SSD)</td><td>99.9%</td></tr>
+          <tr><td>Availability Set (2+ VMs)</td><td class="hl">99.95%</td></tr>
+          <tr><td>Availability Zones (2+ VMs, 2+ zones)</td><td class="hl-g">99.99%</td></tr>
+          <tr><td>Azure Table Storage</td><td>99.9%</td></tr>
+          <tr><td>Cosmos DB (single region)</td><td class="hl-g">99.99%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Disk IOPS Ceilings</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Max IOPS</th></tr></thead>
+        <tbody>
+          <tr><td>Standard HDD</td><td>~2,000</td></tr>
+          <tr><td>Standard SSD</td><td>~6,000</td></tr>
+          <tr><td>Premium SSD</td><td class="hl">~20,000</td></tr>
+          <tr><td>Ultra Disk</td><td class="hl-g">160,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Networking Key Numbers</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resource</th><th>Key Number</th></tr></thead>
+        <tbody>
+          <tr><td>ExpressRoute max bandwidth</td><td class="hl">100 Gbps</td></tr>
+          <tr><td>NAT Gateway max public IPs</td><td class="hl">16</td></tr>
+          <tr><td>AzureBastionSubnet minimum size</td><td class="hl">/27</td></tr>
+          <tr><td>VNet peering behaviour</td><td>Non-transitive</td></tr>
+          <tr><td>RBAC assignments per subscription</td><td class="hl">2,000</td></tr>
+          <tr><td>RBAC assignments per management group</td><td class="hl">500</td></tr>
+          <tr><td>Management group max depth</td><td class="hl">6 levels below root</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Functions (Consumption Plan)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Default timeout</td><td class="hl">10 minutes</td></tr>
+          <tr><td>Maximum timeout</td><td class="hl">60 minutes</td></tr>
+          <tr><td>Cold start</td><td>Yes</td></tr>
+          <tr><td>VNet integration</td><td>❌</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Monitoring Retention</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resource</th><th>Default Retention</th></tr></thead>
+        <tbody>
+          <tr><td>Azure Monitor Metrics</td><td class="hl">93 days</td></tr>
+          <tr><td>Log Analytics Workspace</td><td class="hl">30 days (up to 730)</td></tr>
+          <tr><td>Application Insights</td><td class="hl">90 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="s-h4">Business Continuity RPO / RTO</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resource</th><th>RPO</th><th>RTO</th></tr></thead>
+        <tbody>
+          <tr><td>ASR (Azure VM replication)</td><td class="hl-g">~30 seconds</td><td>Minutes</td></tr>
+          <tr><td>SQL BC in-region failover</td><td class="hl-g">0 (synchronous)</td><td class="hl-g">~20–30 seconds</td></tr>
+          <tr><td>SQL active geo-replication</td><td>~5 seconds</td><td>~30 seconds</td></tr>
+          <tr><td>Backup soft delete retention</td><td colspan="2">14 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="tables">
+    <div class="domain-bar">
+      <div class="domain-bar-left">
+        <div class="s-eyebrow">AZ-305 — Reference</div>
+        <h2>Service Comparison Tables</h2>
+      </div>
+      <div class="domain-bar-weight">
+        <span class="pct">10</span>
+        <span class="pct-label">Comparison matrices</span>
+      </div>
+    </div>
+
+    <p class="s-intro">Side-by-side matrices for every major service group tested on the exam. Reference before quizzes and during renewal.</p>
+
+    <h3 class="s-h3">Table 1 — Load Balancing Full Matrix</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Layer</th><th>Scope</th><th>Protocol</th><th>WAF</th><th>Proxy</th><th>Single Hostname</th><th>URL Routing</th><th>Use When</th></tr></thead>
+        <tbody>
+          <tr><td class="hl">Azure Load Balancer</td><td>L4 TCP/UDP</td><td>Regional</td><td>Any</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>Internal/external TCP/UDP, no HTTP inspection</td></tr>
+          <tr><td class="hl">Application Gateway</td><td>L7 HTTP/S</td><td>Regional</td><td>HTTP/S</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>Single-region web app, URL routing, WAF</td></tr>
+          <tr><td class="hl-g">Azure Front Door</td><td>L7 HTTP/S</td><td>Global</td><td>HTTP/S</td><td>✅</td><td>✅</td><td class="hl-g">✅ Anycast</td><td>✅</td><td>Global HTTP, single hostname, CDN, WAF</td></tr>
+          <tr><td class="hl">Traffic Manager</td><td>DNS</td><td>Global</td><td>Any</td><td>❌</td><td>❌</td><td class="hl-r">❌ DNS redirect</td><td>❌</td><td>Global any-protocol, DNS-based routing</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-tip"><strong>Exam rule:</strong> Multi-region + HTTP + single hostname = <strong>Front Door</strong>. Multi-region + non-HTTP = <strong>Traffic Manager</strong>.</div>
+
+    <h3 class="s-h3">Table 2 — Azure SQL Service Tiers</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Max Storage</th><th>Failover Speed</th><th>Readable Secondary</th><th>SQL Agent</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>SQL DB — General Purpose</td><td class="hl">4 TB</td><td>Slowest</td><td>❌</td><td>❌</td><td>Standard workloads, cost-conscious</td></tr>
+          <tr><td>SQL DB — Business Critical</td><td class="hl">~16 TB</td><td class="hl-g">~20–30s</td><td>✅</td><td>❌</td><td>Mission-critical, in-memory OLTP</td></tr>
+          <tr><td>SQL DB — Hyperscale</td><td class="hl-g">128 TB</td><td class="hl-g">Seconds</td><td>✅</td><td>❌</td><td>Very large DB, fast backup/restore</td></tr>
+          <tr><td>SQL MI — General Purpose</td><td class="hl">16 TB</td><td>Standard</td><td>❌</td><td class="hl-g">✅</td><td>Instance features + standard HA</td></tr>
+          <tr><td>SQL MI — Business Critical</td><td class="hl">16 TB</td><td class="hl-g">~20–30s</td><td>✅</td><td class="hl-g">✅</td><td>Instance features + highest HA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 3 — Messaging Services</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Pattern</th><th>Consumers</th><th>Msg Size</th><th>Ordering</th><th>Dead-Letter</th><th>Replay</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>Storage Queue</td><td>Queue P2P</td><td>Competing</td><td>64 KB</td><td>No guarantee</td><td>❌</td><td>❌</td><td>Cheap, simple task queue</td></tr>
+          <tr><td>Service Bus Queue</td><td>Queue P2P</td><td>Competing</td><td>256 KB / 100 MB</td><td>Sessions</td><td>✅</td><td>❌</td><td>Reliable ordered processing</td></tr>
+          <tr><td class="hl-g">Service Bus Topics</td><td>Pub/Sub</td><td class="hl-g">Each sub gets own copy</td><td>256 KB / 100 MB</td><td>Per sub</td><td>✅</td><td>❌</td><td>Multiple independent consumers</td></tr>
+          <tr><td class="hl">Event Hubs</td><td>Streaming</td><td>Consumer groups</td><td>1 MB</td><td>Partition-level</td><td>❌</td><td class="hl-g">✅ Replay</td><td>High-volume telemetry, IoT, logs</td></tr>
+          <tr><td>Event Grid</td><td>Event routing</td><td>Push to handlers</td><td>1 MB</td><td>No</td><td>❌</td><td>❌</td><td>Reactive microservices, serverless triggers</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 4 — Storage Redundancy</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Option</th><th>Copies</th><th>Primary Zones</th><th>Secondary Region</th><th>Read Secondary Always</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>LRS</td><td>3</td><td>1 DC</td><td>❌</td><td>❌</td><td>Dev/test, cheapest</td></tr>
+          <tr><td class="hl">ZRS</td><td>3</td><td class="hl">3 zones</td><td>❌</td><td>❌</td><td>Regional compliance + zone HA</td></tr>
+          <tr><td>GRS</td><td>6</td><td>1 DC</td><td>✅ after failover</td><td>❌</td><td>Geo-redundancy, lower cost</td></tr>
+          <tr><td class="hl">GZRS</td><td>6</td><td class="hl">3 zones</td><td>✅ after failover</td><td>❌</td><td>Zone HA + geo-redundancy</td></tr>
+          <tr><td>RA-GRS</td><td>6</td><td>1 DC</td><td>✅</td><td class="hl-g">✅ Always</td><td>Read-heavy, needs secondary reads</td></tr>
+          <tr><td class="hl">RA-GZRS</td><td>6</td><td class="hl">3 zones</td><td>✅</td><td class="hl-g">✅ Always</td><td>Highest availability + reads</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn"><strong>Regional compliance gate:</strong> Eliminates GRS, GZRS, RA-GRS, RA-GZRS. Only LRS or ZRS remain when data must stay in one region.</div>
+
+    <h3 class="s-h3">Table 5 — Compute Services</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Workload</th><th>Time Limit</th><th>VNet</th><th>Container</th><th>Cost Model</th></tr></thead>
+        <tbody>
+          <tr><td>Virtual Machine</td><td>Any (full OS control)</td><td>None</td><td>✅</td><td>❌</td><td>Hourly</td></tr>
+          <tr><td>App Service</td><td>Web app, REST API</td><td>None</td><td>✅ Premium</td><td>Optional</td><td>Plan/hour</td></tr>
+          <tr><td>Functions (Consumption)</td><td>Event-driven, short tasks</td><td class="hl-r">60 min max</td><td>❌</td><td>❌</td><td>Per execution</td></tr>
+          <tr><td>Functions (Premium)</td><td>Event-driven, consistent</td><td>Unlimited</td><td>✅</td><td>❌</td><td>Monthly</td></tr>
+          <tr><td>ACI</td><td>Single container, short-lived</td><td>None</td><td>✅</td><td>✅</td><td>Per second</td></tr>
+          <tr><td>AKS</td><td>Container orchestration</td><td>None</td><td>✅</td><td>✅</td><td>Node pool/hour</td></tr>
+          <tr><td class="hl-g">Azure Batch</td><td>HPC, parallel, large-scale</td><td class="hl-g">None</td><td>✅</td><td>Optional</td><td>Per VM/second</td></tr>
+          <tr><td>Azure Databricks</td><td>Spark ETL, ML, streaming</td><td>None</td><td>✅</td><td>❌</td><td>DBU/hour</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 6 — On-Premises to Azure Connectivity</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Path</th><th>Encrypted</th><th>Latency</th><th>Max Bandwidth</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>P2S VPN</td><td>Public internet</td><td>✅ IKEv2/SSTP</td><td>Variable</td><td>~10 Gbps</td><td>Remote individual users</td></tr>
+          <tr><td>S2S VPN</td><td>Public internet</td><td>✅ IPSec</td><td>Variable</td><td>~10 Gbps</td><td>Branch to Azure (smaller scale)</td></tr>
+          <tr><td class="hl-g">ExpressRoute</td><td class="hl-g">Private circuit</td><td class="hl-r">❌ Not encrypted</td><td class="hl-g">Lowest, consistent</td><td class="hl-g">100 Gbps</td><td>Enterprise, latency-sensitive</td></tr>
+          <tr><td>ER + IPSec</td><td>Private circuit</td><td class="hl-g">✅</td><td class="hl-g">Lowest</td><td class="hl-g">100 Gbps</td><td>Encrypted + lowest latency</td></tr>
+          <tr><td>Virtual WAN Std</td><td>MS backbone</td><td>✅ per tunnel</td><td>Low</td><td>100 Gbps</td><td>Global multi-branch automated</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 7 — HA Architecture Comparison</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Architecture</th><th>Failure Scope</th><th>SLA</th><th>RTO</th></tr></thead>
+        <tbody>
+          <tr><td>Single VM (Premium SSD)</td><td>No planned HA</td><td>99.9%</td><td>Hours (manual)</td></tr>
+          <tr><td>Availability Set</td><td>Rack / hardware</td><td class="hl">99.95%</td><td>Near-zero</td></tr>
+          <tr><td class="hl-g">Availability Zone</td><td>Datacenter</td><td class="hl-g">99.99%</td><td>~Seconds</td></tr>
+          <tr><td>Multi-region active-passive (ASR)</td><td>Region</td><td>~99.99%+</td><td>Minutes</td></tr>
+          <tr><td>Multi-region active-active</td><td>Region</td><td>~99.99%+</td><td>~Seconds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 8 — Non-Relational Storage</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Model</th><th>SLA</th><th>Global Dist</th><th>HNS/HDFS</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>Azure Table Storage</td><td>Key-value</td><td class="hl-r">99.9%</td><td>❌</td><td>❌</td><td>Cheap structured NoSQL</td></tr>
+          <tr><td class="hl-g">Cosmos DB for Table</td><td>Key-value</td><td class="hl-g">99.99%</td><td>✅</td><td>❌</td><td>High-SLA structured NoSQL</td></tr>
+          <tr><td>Cosmos DB Core (SQL)</td><td>Document</td><td class="hl-g">99.99%</td><td>✅</td><td>❌</td><td>JSON documents, flexible queries</td></tr>
+          <tr><td>Cosmos DB MongoDB</td><td>Document</td><td class="hl-g">99.99%</td><td>✅</td><td>❌</td><td>MongoDB-compatible migration</td></tr>
+          <tr><td>Cosmos DB Cassandra</td><td>Wide-column</td><td class="hl-g">99.99%</td><td>✅</td><td>❌</td><td>Cassandra-compatible migration</td></tr>
+          <tr><td>Cosmos DB Gremlin</td><td>Graph</td><td class="hl-g">99.99%</td><td>✅</td><td>❌</td><td>Graph/relationship traversal</td></tr>
+          <tr><td>Azure Blob Storage</td><td>Object</td><td>99.9%</td><td>❌</td><td>❌</td><td>Unstructured files, images, media</td></tr>
+          <tr><td class="hl">ADLS Gen2</td><td>Object + HNS</td><td>99.9%</td><td>❌</td><td class="hl-g">✅</td><td>Big data, Spark/Hadoop analytics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 9 — Azure Files: Standard vs Premium</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Standard (GPv2)</th><th>Premium (FileStorage)</th></tr></thead>
+        <tbody>
+          <tr><td>SMB 2.1 / 3.0</td><td>✅</td><td>✅</td></tr>
+          <tr><td><strong>NFS 4.1</strong></td><td class="hl-r">❌ Not supported</td><td class="hl-g">✅ Premium only</td></tr>
+          <tr><td>LRS / ZRS</td><td>✅</td><td>✅</td></tr>
+          <tr><td>GRS / RA-GRS</td><td>✅</td><td class="hl-r">❌</td></tr>
+          <tr><td><strong>GZRS / RA-GZRS</strong></td><td class="hl-g">✅</td><td class="hl-r">❌ Not on Premium</td></tr>
+          <tr><td>Max IOPS</td><td>~1,000–10,000</td><td class="hl-g">Up to 100,000</td></tr>
+          <tr><td>Latency</td><td>Single-digit ms</td><td class="hl-g">Sub-ms</td></tr>
+          <tr><td>Private Endpoint</td><td>✅</td><td>✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="s-h3">Table 10 — Analytics Services</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Engine</th><th>Query Language</th><th>Latency Mode</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td class="hl-g">Azure Databricks</td><td class="hl-g">Apache Spark</td><td>Python/Scala/SQL/R</td><td>Batch + Streaming</td><td>Big data ETL, ML, Spark streaming</td></tr>
+          <tr><td class="hl">Stream Analytics</td><td>Microsoft DSL</td><td class="hl">SQL-based</td><td class="hl-g">Real-time (&lt;1s)</td><td>IoT, telemetry, continuous queries</td></tr>
+          <tr><td>Azure Synapse</td><td>SQL + Spark</td><td>T-SQL + Spark</td><td>Batch</td><td>Unified analytics (DW + Spark + ADF)</td></tr>
+          <tr><td>HDInsight</td><td>Hadoop/Spark/Kafka</td><td>Multiple</td><td>Batch</td><td>Custom open-source, Hadoop ecosystem</td></tr>
+          <tr><td>Data Explorer (ADX)</td><td>Kusto</td><td class="hl">KQL</td><td>Near-real-time</td><td>Log analytics, time-series, exploration</td></tr>
+          <tr><td>Analysis Services</td><td>SSAS Tabular</td><td>DAX / MDX</td><td>Batch (refresh)</td><td>BI semantic model, Power BI layer</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="section" id="quiz-d1"    style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">🧠 Quiz D1 — coming soon</p></section>
+  <section class="section" id="quiz-d2"    style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">🧠 Quiz D2 — coming soon</p></section>
+  <section class="section" id="quiz-d3"    style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">🧠 Quiz D3 — coming soon</p></section>
+  <section class="section" id="quiz-d4"    style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">🧠 Quiz D4 — coming soon</p></section>
+  <section class="section" id="traps"      style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">⚠️ Exam Traps — coming soon</p></section>
+  <section class="section" id="glossary"   style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">📖 Glossary — coming soon</p></section>
+  <section class="section" id="study-plan" style="min-height:200px"><p style="color:var(--text-muted);padding-top:20px;">📅 Study Plan — coming soon</p></section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div>ZenCloud Global Consultants · Phil Myint · Brisbane, Australia</div>
+    <div class="footer-links">
+      <a href="https://learn.microsoft.com/en-us/credentials/certifications/exams/az-104/" target="_blank" rel="noopener">AZ-104 Official</a>
+      <a href="https://learn.microsoft.com/en-us/credentials/certifications/exams/az-305/" target="_blank" rel="noopener">AZ-305 Official</a>
+      <a href="https://learn.microsoft.com/en-us/azure/well-architected/" target="_blank" rel="noopener">Well-Architected Framework</a>
+    </div>
+  </footer>
+
+</main><!-- /main -->
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ---- Mobile sidebar ---- */
+  const mobBtn  = document.getElementById('mobBtn');
+  const sidebar = document.getElementById('sidebar');
+
+  mobBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 920 &&
+        sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) &&
+        e.target !== mobBtn) {
+      sidebar.classList.remove('open');
+    }
+  });
+
+  /* ---- Active nav link via IntersectionObserver ---- */
+  const navLinks = document.querySelectorAll('.nav-link[data-section]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.dataset.section === id);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -70% 0px',
+    threshold: 0
+  });
+
+  document.querySelectorAll('section[id], div[id]').forEach(el => observer.observe(el));
+
+  /* ---- Smooth close sidebar on nav link click (mobile) ---- */
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 920) {
+        sidebar.classList.remove('open');
+      }
+    });
+  });
+</script>
+</body>
+</html>
